@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/issue-tracking-system # jdbc:h2:~/issue-tracking-system
+    url: jdbc:h2:tcp://localhost/~/issuetrackingsystem # jdbc:h2:~/issuetrackingsystem
     username: sa
     password:
     driver-class-name: org.h2.Driver
