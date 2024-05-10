@@ -32,4 +32,10 @@ public abstract class User {
     private LocalDateTime createdDate;
 
     abstract boolean canManageProject(); // Admin
+    abstract boolean canManageComment(); // PL, Dev, Tester
+    abstract boolean canManageIssue(); // Tester
+    abstract boolean canSetAssignee(); // PL
+    abstract boolean canChangeIssueStateAssignedToFixed(); // Dev
+    abstract boolean canChangeIssueStateFixedToResolved(); // Tester
+    abstract boolean canChangeIssueStateResolvedToClosed(); // PL
 }
