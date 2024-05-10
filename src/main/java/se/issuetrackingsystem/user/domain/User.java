@@ -26,9 +26,6 @@ public abstract class User {
     private String password;
 
     @Column(nullable = false)
-    private String role;
-
-    @Column(nullable = false)
     private LocalDateTime createdDate;
 
     abstract boolean canManageProject(); // Admin
