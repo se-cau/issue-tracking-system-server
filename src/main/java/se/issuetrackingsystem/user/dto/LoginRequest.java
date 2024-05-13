@@ -1,12 +1,12 @@
 package se.issuetrackingsystem.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@Builder
-public class UserRequest {
+@RequiredArgsConstructor
+public class LoginRequest {
 
     @NotBlank
     private final String username;
