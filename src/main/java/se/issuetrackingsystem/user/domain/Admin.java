@@ -2,17 +2,9 @@ package se.issuetrackingsystem.user.domain;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("Admin")
-@Getter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class Admin extends User {
 
     @Override
