@@ -1,8 +1,7 @@
 package se.issuetrackingsystem.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import se.issuetrackingsystem.exception.CustomException;
@@ -21,8 +20,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public void register(RegisterRequest request) {
@@ -52,11 +50,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return new LoginResponse(user);
-    }
-
-    @Override
-    public void logout() {
-        SecurityContextHolder.clearContext();
     }
 
     private boolean isDuplicateUsername(String username) {
