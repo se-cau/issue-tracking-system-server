@@ -27,4 +27,11 @@ public class UserController {
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         return ResponseEntity.ok(userService.login(request));
     }
+
+    @PostMapping("/logout")
+    public void logout() {
+        userService.logout();
+    }
+
+
 }

@@ -16,7 +16,8 @@ public enum ErrorCode {
     /*
      * 403 Forbidden: 승인을 거부함
      */
-    USER_FORBIDDEN(HttpStatus.FORBIDDEN, "존재하는 회원 이름입니다."),
+    USERNAME_FORBIDDEN(HttpStatus.FORBIDDEN, "존재하는 회원 이름입니다."),
+    PASSWORD_FORBIDDEN(HttpStatus.FORBIDDEN, "비밀번호가 올바르지 않습니다."),
 
     /*
      * 404 NOT_FOUND: 리소스를 찾을 수 없음

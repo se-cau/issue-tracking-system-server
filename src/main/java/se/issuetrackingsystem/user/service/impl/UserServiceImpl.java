@@ -1,7 +1,7 @@
 package se.issuetrackingsystem.user.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         String role = request.getRole();
 
         if (isDuplicateUsername(username)) {
-            throw new CustomException(ErrorCode.USER_FORBIDDEN);
+            throw new CustomException(ErrorCode.USERNAME_FORBIDDEN);
         }
 
         User user = createUser(role, username, passwordEncoder.encode(password));
@@ -43,12 +43,20 @@ public class UserServiceImpl implements UserService {
     public LoginResponse login(LoginRequest request) {
 
         String username = request.getUsername();
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        User user = userRepository.findByUsername(userDetails.getUsername())
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new CustomException(ErrorCode.PASSWORD_FORBIDDEN);
+        }
+
         return new LoginResponse(user);
+    }
+
+    @Override
+    public void logout() {
+        SecurityContextHolder.clearContext();
     }
 
     private boolean isDuplicateUsername(String username) {
