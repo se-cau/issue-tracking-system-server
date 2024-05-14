@@ -17,6 +17,7 @@ public enum ErrorCode {
      * 403 Forbidden: 승인을 거부함
      */
     USERNAME_FORBIDDEN(HttpStatus.FORBIDDEN, "존재하는 회원 이름입니다."),
+    ROLE_FORBIDDEN(HttpStatus.FORBIDDEN, "역할이 올바르지 않습니다."),
     PASSWORD_FORBIDDEN(HttpStatus.FORBIDDEN, "비밀번호가 올바르지 않습니다."),
 
     /*

@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
             case "Tester":
                 return new Tester(username, password);
             default:
-                throw new IllegalArgumentException("Invalid role: " + role);
+                throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
         }
     }
 }
