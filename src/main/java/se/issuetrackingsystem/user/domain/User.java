@@ -5,11 +5,10 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "role")
 @Getter
-@Setter
 @NoArgsConstructor
 public abstract class User {
 
@@ -18,7 +17,7 @@ public abstract class User {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
@@ -34,4 +33,10 @@ public abstract class User {
     abstract boolean canChangeIssueStateAssignedToFixed(); // Dev
     abstract boolean canChangeIssueStateFixedToResolved(); // Tester
     abstract boolean canChangeIssueStateResolvedToClosed(); // PL
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.createdDate = LocalDateTime.now();
+    }
 }

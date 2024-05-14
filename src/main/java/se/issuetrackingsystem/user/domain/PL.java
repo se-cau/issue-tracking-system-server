@@ -2,9 +2,11 @@ package se.issuetrackingsystem.user.domain;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("PL")
+@NoArgsConstructor
 public class PL extends Contributor {
     @Override
     boolean canManageIssue() {
@@ -29,5 +31,9 @@ public class PL extends Contributor {
     @Override
     boolean canChangeIssueStateResolvedToClosed() {
         return true;
+    }
+
+    public PL(String username, String password) {
+        super(username, password);
     }
 }

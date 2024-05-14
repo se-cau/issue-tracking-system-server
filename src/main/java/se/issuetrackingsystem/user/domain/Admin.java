@@ -2,9 +2,11 @@ package se.issuetrackingsystem.user.domain;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.NoArgsConstructor;
 
 @Entity
 @DiscriminatorValue("Admin")
+@NoArgsConstructor
 public class Admin extends User {
 
     @Override
@@ -40,5 +42,9 @@ public class Admin extends User {
     @Override
     boolean canChangeIssueStateResolvedToClosed() {
         return false;
+    }
+
+    public Admin(String username, String password) {
+        super(username, password);
     }
 }
