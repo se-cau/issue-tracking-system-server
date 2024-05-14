@@ -2,8 +2,8 @@ package se.issuetrackingsystem.Issue;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import se.issuetrackingsystem.Project.Project;
-import se.issuetrackingsystem.user.User;
+import se.issuetrackingsystem.user.domain.User;
+import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,13 +14,14 @@ import java.util.Optional;
 @Service
 public class IssueService {
     private final IssueRepository issueRepository;
+    private final UserRepository userRepository;
 
-    public Issue create(Project project, String title, String description, User reporter){
+    public Issue create(Project project, String title, String description, Long reporterid){
         Issue issue = new Issue();
         issue.setProject(project);
         issue.setTitle(title);
         issue.setDescription(description);
-        issue.setReporter(reporter);
+        issue.setReporter(userRepository.findById(reporterid).get());
         issue.setCreated_at(LocalDateTime.now());
         this.issueRepository.save(issue);
         return issue;
@@ -58,8 +59,8 @@ public class IssueService {
         this.issueRepository.delete(issue);
     }
 
-    public void setAssignee(Issue issue, User user){
-        issue.setAssignee(user);
+    public void setAssignee(Issue issue, Long assigneeid){
+        issue.setAssignee(userRepository.findById(assigneeid).get());
         this.issueRepository.save(issue);
     }
 
