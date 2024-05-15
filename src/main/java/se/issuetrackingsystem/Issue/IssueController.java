@@ -6,9 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import se.issuetrackingsystem.Project.Project;
-import se.issuetrackingsystem.user.domain.User;
-import se.issuetrackingsystem.user.repository.UserRepository;
-import se.issuetrackingsystem.user.service.impl.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;

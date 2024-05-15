@@ -3,11 +3,9 @@ package se.issuetrackingsystem.Issue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import se.issuetrackingsystem.Project.Project;
-import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

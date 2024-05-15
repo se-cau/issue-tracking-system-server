@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import se.issuetrackingsystem.Issue.Issue;
+import se.issuetrackingsystem.user.domain.User;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -12,4 +16,16 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String message;
+
+    private LocalDateTime created_at;
+
+    @ManyToOne
+    private User author;
+
+    @ManyToOne
+    private Issue issue;
+
+
 }
