@@ -8,9 +8,13 @@ import se.issuetrackingsystem.user.domain.User;
 public class LoginResponse {
 
     @NotBlank
+    private final Long userId;
+
+    @NotBlank
     private final String username;
 
     public LoginResponse(User user) {
+        this.userId = user.getId();
         this.username = user.getUsername();
     }
 }
