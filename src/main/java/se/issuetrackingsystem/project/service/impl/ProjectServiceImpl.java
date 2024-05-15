@@ -11,6 +11,7 @@ import se.issuetrackingsystem.project.service.ProjectService;
 import se.issuetrackingsystem.user.domain.Admin;
 import se.issuetrackingsystem.user.domain.Contributor;
 import se.issuetrackingsystem.user.domain.ProjectContributor;
+import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final ProjectContributorRepository projectContributorRepository;
 
     @Override
     public void createProject(ProjectRequest request) {
@@ -33,9 +35,9 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         Project project = new Project(title, admin);
-        addContributors(contributorIds, project);
-
         projectRepository.save(project);
+
+        addContributors(contributorIds, project);
     }
 
     private void addContributors(List<Long> contributorIds, Project project) {
@@ -48,7 +50,9 @@ public class ProjectServiceImpl implements ProjectService {
                 })
                 .toList();
 
-        projectContributors.forEach(project::addContributor);
-    }
+        projectContributorRepository.saveAll(projectContributors);
 
+        projectContributors.forEach(project::addContributor);
+        projectRepository.save(project);
+    }
 }
