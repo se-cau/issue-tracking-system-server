@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import se.issuetrackingsystem.Project.Project;
 import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.UserRepository;
 import se.issuetrackingsystem.user.service.impl.UserServiceImpl;
@@ -19,19 +20,19 @@ import java.util.List;
 public class IssueController {
     private final IssueService issueService;
 
-    @PostMapping("/{projectid}")
-    public void issueCreate(@RequestBody IssueRequest issueRequest, @PathVariable("projectid") Long projectid){
+    @PostMapping("")
+    public void issueCreate(@RequestBody IssueRequest issueRequest, @RequestParam("id") Long projectid){
         //Project project = this.projectService.getProject(projectid);
         Project project = new Project(); //temporary
         this.issueService.create(project,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid());
     }
 
     @ResponseBody
-    @GetMapping("/{projectid}")
-    public List<IssueResponse> issueCheck(@PathVariable("projectid") Long projectid){
+    @GetMapping("")
+    public List<IssueResponse> issueCheck(@RequestParam("id") Long projectid){
         //Project project = this.projectService.getProject(projectid);
         Project project = new Project(); //temporary
-        List<Issue> issues = new ArrayList<>();
+        List<Issue> issues;
         issues=this.issueService.getList(project);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
@@ -40,37 +41,37 @@ public class IssueController {
         return responses;
     }
 
-    @GetMapping("/{issueid}")
+    @GetMapping("")
     @ResponseBody
-    public IssueResponse issueDetail(@PathVariable("issueid") Long issueid){
+    public IssueResponse issueDetail(@RequestParam("id") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         IssueResponse issueResponse = new IssueResponse(issue);
         return issueResponse;
     }
 
-    @DeleteMapping("/{issueid}")
-    public void issueDelete(@PathVariable("issueid") Long issueid){
+    @DeleteMapping("")
+    public void issueDelete(@RequestParam("id") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         this.issueService.delete(issue);
     }
 
-    @PatchMapping("/{issueid}")
-    public void issueModify(@RequestBody IssueRequest issueRequest,@PathVariable("issueid") Long issueid){
+    @PatchMapping("")
+    public void issueModify(@RequestBody IssueRequest issueRequest,@RequestParam("id") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         this.issueService.modify(issue,issueRequest.getDescription());
     }
 
-    @PostMapping("/assignees/{issueid}")
-    public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@PathVariable("issueid") Long issueid){
+    @PostMapping("/assignees")
+    public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("id") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         this.issueService.setAssignee(issue,issueRequest.getAssignee_id());
     }
 
-    @GetMapping("/{status}")
-    public List<IssueResponse> issueCheckByStatus(@PathVariable("status") Issue.Status status){
+    @GetMapping("")
+    public List<IssueResponse> issueCheckByStatus(@RequestParam("stat") Issue.Status status){
         //Project project = this.projectService.getProject(projectid);
         Project project = new Project(); //temporary
-        List<Issue> issues = new ArrayList<>();
+        List<Issue> issues;
         issues=this.issueService.getList(project,status);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
@@ -79,8 +80,8 @@ public class IssueController {
         return responses;
     }
 
-    @PatchMapping("/status/{issueid}")
-    public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@PathVariable("issueid") Long issueid){
+    @PatchMapping("/status")
+    public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("id") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         this.issueService.changeStatus(issue,issueRequest.getStatus());
     }
