@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import se.issuetrackingsystem.user.domain.Admin;
+import se.issuetrackingsystem.user.domain.ProjectContributor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,6 +27,9 @@ public class Project {
     @JoinColumn(name = "admin_id", nullable = false)
     private Admin admin;
 
+    @OneToMany(mappedBy = "project")
+    private List<ProjectContributor> projectContributors = new ArrayList<>();
+
     @Column(nullable = false)
     private LocalDateTime createdDate;
 
@@ -31,5 +37,13 @@ public class Project {
         this.title = title;
         this.admin = admin;
         this.createdDate = LocalDateTime.now();
+    }
+
+    public void addContributor(ProjectContributor projectContributor) {
+        projectContributors.add(projectContributor);
+    }
+
+    public void removeContributor(ProjectContributor projectContributor) {
+        projectContributors.remove(projectContributor);
     }
 }
