@@ -1,10 +1,14 @@
-package se.issuetrackingsystem.issue;
+package se.issuetrackingsystem.issue.controller;
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import se.issuetrackingsystem.issue.service.IssueService;
+import se.issuetrackingsystem.issue.domain.Issue;
+import se.issuetrackingsystem.issue.dto.IssueRequest;
+import se.issuetrackingsystem.issue.dto.IssueResponse;
 import se.issuetrackingsystem.project.Project;
 
 import java.util.ArrayList;

@@ -1,8 +1,9 @@
-package se.issuetrackingsystem.issue;
+package se.issuetrackingsystem.issue.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import se.issuetrackingsystem.issue.domain.Issue;
 
 import java.time.LocalDateTime;
 

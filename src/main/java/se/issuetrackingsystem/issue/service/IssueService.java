@@ -1,7 +1,9 @@
-package se.issuetrackingsystem.issue;
+package se.issuetrackingsystem.issue.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import se.issuetrackingsystem.issue.domain.Issue;
+import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.Project;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
