@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import se.issuetrackingsystem.exception.CustomException;
 import se.issuetrackingsystem.exception.ErrorCode;
 import se.issuetrackingsystem.user.domain.*;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
+    @Transactional
     public void register(RegisterRequest request) {
 
         String username = request.getUsername();
@@ -38,6 +40,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public LoginResponse login(LoginRequest request) {
 
         String username = request.getUsername();
