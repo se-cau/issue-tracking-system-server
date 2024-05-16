@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 public class IssueResponse {
 
-    IssueResponse(Issue issue){
+    public IssueResponse(Issue issue){
         this.setTitle(issue.getTitle());
         this.setDescription(issue.getDescription());
         this.setReporter(issue.getReporter().getUsername());

@@ -9,7 +9,7 @@ import se.issuetrackingsystem.issue.service.IssueService;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.dto.IssueRequest;
 import se.issuetrackingsystem.issue.dto.IssueResponse;
-import se.issuetrackingsystem.project.Project;
+import se.issuetrackingsystem.project.domain.Project;
 
 import java.util.ArrayList;
 import java.util.List;

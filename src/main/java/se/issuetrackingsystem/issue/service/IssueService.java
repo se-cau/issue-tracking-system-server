@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
-import se.issuetrackingsystem.project.Project;
+import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
