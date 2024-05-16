@@ -1,4 +1,4 @@
-package se.issuetrackingsystem.Issue;
+package se.issuetrackingsystem.issue;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,8 +8,8 @@ import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
-import se.issuetrackingsystem.Comment.Comment;
-import se.issuetrackingsystem.Project.Project;
+import se.issuetrackingsystem.comment.Comment;
+import se.issuetrackingsystem.project.Project;
 import se.issuetrackingsystem.user.domain.User;
 
 @Getter

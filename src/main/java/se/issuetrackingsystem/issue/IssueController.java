@@ -1,14 +1,11 @@
-package se.issuetrackingsystem.Issue;
+package se.issuetrackingsystem.issue;
 
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import se.issuetrackingsystem.Project.Project;
-import se.issuetrackingsystem.user.domain.User;
-import se.issuetrackingsystem.user.repository.UserRepository;
-import se.issuetrackingsystem.user.service.impl.UserServiceImpl;
+import se.issuetrackingsystem.project.Project;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +19,7 @@ public class IssueController {
 
     @PostMapping("")
     public void issueCreate(@RequestBody IssueRequest issueRequest, @RequestParam("id") Long projectid){
-        //Project project = this.projectService.getProject(projectid);
+        //project project = this.projectService.getProject(projectid);
         Project project = new Project(); //temporary
         this.issueService.create(project,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid());
     }
@@ -30,7 +27,7 @@ public class IssueController {
     @ResponseBody
     @GetMapping("")
     public List<IssueResponse> issueCheck(@RequestParam("id") Long projectid){
-        //Project project = this.projectService.getProject(projectid);
+        //project project = this.projectService.getProject(projectid);
         Project project = new Project(); //temporary
         List<Issue> issues;
         issues=this.issueService.getList(project);
@@ -69,7 +66,7 @@ public class IssueController {
 
     @GetMapping("")
     public List<IssueResponse> issueCheckByStatus(@RequestParam("stat") Issue.Status status){
-        //Project project = this.projectService.getProject(projectid);
+        //project project = this.projectService.getProject(projectid);
         Project project = new Project(); //temporary
         List<Issue> issues;
         issues=this.issueService.getList(project,status);

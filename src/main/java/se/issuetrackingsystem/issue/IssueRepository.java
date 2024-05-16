@@ -1,7 +1,7 @@
-package se.issuetrackingsystem.Issue;
+package se.issuetrackingsystem.issue;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import se.issuetrackingsystem.Project.Project;
+import se.issuetrackingsystem.project.Project;
 
 import java.util.List;
 

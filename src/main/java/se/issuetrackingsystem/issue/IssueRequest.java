@@ -1,4 +1,4 @@
-package se.issuetrackingsystem.Issue;
+package se.issuetrackingsystem.issue;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
