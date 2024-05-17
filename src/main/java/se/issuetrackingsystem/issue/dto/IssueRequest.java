@@ -12,7 +12,7 @@ public class IssueRequest {
     private String title;
 
     @NotEmpty
-    private String Description;
+    private String description;
 
     private Long assignee_id;
 

@@ -14,10 +14,15 @@ public class IssueResponse {
     public IssueResponse(Issue issue){
         this.setTitle(issue.getTitle());
         this.setDescription(issue.getDescription());
-        this.setReporter(issue.getReporter().getUsername());
-        this.setAssignee(issue.getReporter().getUsername());
-        this.setFixer(issue.getFixer().getUsername());
-        this.setNumber(issue.getIssue_num());
+        if(issue.getReporter()!=null) {
+            this.setReporter(issue.getReporter().getUsername());
+        }
+        if(issue.getAssignee()!=null) {
+            this.setReporter(issue.getAssignee().getUsername());
+        }
+        if(issue.getFixer()!=null) {
+            this.setReporter(issue.getFixer().getUsername());
+        }
         this.setPriority(issue.getPriority());
         this.setCreated_at(issue.getCreated_at());
         this.setUpdated_at(issue.getUpdated_at());

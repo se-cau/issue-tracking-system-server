@@ -22,17 +22,14 @@ public class Issue {
     @ManyToOne
     private Project project;
 
-    @OneToOne
+    @ManyToOne
     private User reporter;
 
-    @OneToOne
+    @ManyToOne
     private User assignee;
 
-    @OneToOne
+    @ManyToOne
     private User fixer;
-
-    @Column(nullable = false)
-    private Long issue_num;
 
     @Column(length = 200, nullable = false)
     private String title;
@@ -41,10 +38,10 @@ public class Issue {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.NEW;
 
     @Enumerated(EnumType.STRING)
-    private Priority priority;
+    private Priority priority = Priority.MAJOR;
 
     @ManyToOne
     private User author;
