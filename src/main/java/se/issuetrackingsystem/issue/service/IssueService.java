@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.domain.Project;
+import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -16,9 +17,11 @@ import java.util.Optional;
 public class IssueService {
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
 
-    public Issue create(Project project, String title, String description, Long reporterid){
+    public Issue create(Long projectid, String title, String description, Long reporterid){
         Issue issue = new Issue();
+        Project project = this.projectRepository.findById(projectid).get();
         issue.setProject(project);
         issue.setTitle(title);
         issue.setDescription(description);
@@ -38,14 +41,16 @@ public class IssueService {
         }
     }
 
-    public List<Issue> getList(Project project){
+    public List<Issue> getList(Long projectid){
         List<Issue> issues;
+        Project project = this.projectRepository.findById(projectid).get();
         issues = this.issueRepository.findAllByProject(project);
         return issues;
     }
 
-    public List<Issue> getList(Project project, Issue.Status status){
+    public List<Issue> getList(Long projectid, Issue.Status status){
         List<Issue> issues;
+        Project project = this.projectRepository.findById(projectid).get();
         issues = this.issueRepository.findAllByProjectAndStatus(project,status);
         return issues;
     }

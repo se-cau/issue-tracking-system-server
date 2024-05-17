@@ -9,7 +9,6 @@ import se.issuetrackingsystem.issue.service.IssueService;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.dto.IssueRequest;
 import se.issuetrackingsystem.issue.dto.IssueResponse;
-import se.issuetrackingsystem.project.domain.Project;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +22,14 @@ public class IssueController {
 
     @PostMapping("")
     public void issueCreate(@RequestBody IssueRequest issueRequest, @RequestParam("id") Long projectid){
-        //project project = this.projectService.getProject(projectid);
-        Project project = new Project(); //temporary
-        this.issueService.create(project,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid());
+        this.issueService.create(projectid,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid());
     }
 
     @ResponseBody
     @GetMapping("")
     public List<IssueResponse> issueCheck(@RequestParam("id") Long projectid){
-        //project project = this.projectService.getProject(projectid);
-        Project project = new Project(); //temporary
         List<Issue> issues;
-        issues=this.issueService.getList(project);
+        issues=this.issueService.getList(projectid);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));
@@ -42,7 +37,7 @@ public class IssueController {
         return responses;
     }
 
-    @GetMapping("")
+    @GetMapping("/detail")
     @ResponseBody
     public IssueResponse issueDetail(@RequestParam("id") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
@@ -68,12 +63,10 @@ public class IssueController {
         this.issueService.setAssignee(issue,issueRequest.getAssignee_id());
     }
 
-    @GetMapping("")
-    public List<IssueResponse> issueCheckByStatus(@RequestParam("stat") Issue.Status status){
-        //project project = this.projectService.getProject(projectid);
-        Project project = new Project(); //temporary
+    @GetMapping("/stat")
+    public List<IssueResponse> issueCheckByStatus(@RequestParam("stat") Issue.Status status,@RequestParam("id") Long projectid){
         List<Issue> issues;
-        issues=this.issueService.getList(project,status);
+        issues=this.issueService.getList(projectid,status);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));

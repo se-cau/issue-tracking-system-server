@@ -20,7 +20,6 @@ public class Issue {
     private Long id;
 
     @ManyToOne
-    @Column(nullable = false)
     private Project project;
 
     @OneToOne
@@ -54,7 +53,7 @@ public class Issue {
 
     private LocalDateTime created_at;
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
+    @OneToMany(cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
     public enum Status{
