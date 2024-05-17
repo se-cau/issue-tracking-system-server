@@ -1,10 +1,10 @@
-package se.issuetrackingsystem.Comment;
+package se.issuetrackingsystem.comment.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import se.issuetrackingsystem.Issue.Issue;
+import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.user.domain.User;
 
 import java.time.LocalDateTime;

@@ -1,8 +1,9 @@
-package se.issuetrackingsystem.Issue;
+package se.issuetrackingsystem.issue.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
+import se.issuetrackingsystem.issue.domain.Issue;
 
 @Getter
 @Setter
@@ -11,9 +12,9 @@ public class IssueRequest {
     private String title;
 
     @NotEmpty
-    private String Description;
+    private String description;
 
-    private Long assignee_id; //String user name 으로 받아야하나?
+    private Long assignee_id;
 
     private Issue.Status status;
 

@@ -1,15 +1,14 @@
-package se.issuetrackingsystem.Issue;
+package se.issuetrackingsystem.issue.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
-import se.issuetrackingsystem.Comment.Comment;
-import se.issuetrackingsystem.Project.Project;
+import se.issuetrackingsystem.comment.domain.Comment;
+import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.user.domain.User;
 
 @Getter
@@ -23,31 +22,26 @@ public class Issue {
     @ManyToOne
     private Project project;
 
-    @OneToOne
-    @Nullable
+    @ManyToOne
     private User reporter;
 
-    @OneToOne
-    @Nullable
+    @ManyToOne
     private User assignee;
 
-    @OneToOne
-    @Nullable
+    @ManyToOne
     private User fixer;
 
-    private Long issue_num;
-
-    @Column(length = 200)
+    @Column(length = 200, nullable = false)
     private String title;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.NEW;
 
     @Enumerated(EnumType.STRING)
-    private Priority priority;
+    private Priority priority = Priority.MAJOR;
 
     @ManyToOne
     private User author;
@@ -56,8 +50,8 @@ public class Issue {
 
     private LocalDateTime created_at;
 
-    @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
-    private List<Comment> commentLIst;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<Comment> commentList;
 
     public enum Status{
         NEW,ASSIGNED,FIXED,RESOLVED,CLOSE,REOPENED

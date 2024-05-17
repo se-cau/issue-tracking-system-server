@@ -1,16 +1,16 @@
-package se.issuetrackingsystem.Comment;
+package se.issuetrackingsystem.comment.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import se.issuetrackingsystem.Issue.Issue;
-import se.issuetrackingsystem.Issue.IssueRepository;
-import se.issuetrackingsystem.Project.Project;
+import se.issuetrackingsystem.comment.domain.Comment;
+import se.issuetrackingsystem.comment.repository.CommentRepository;
+import se.issuetrackingsystem.issue.domain.Issue;
+import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -42,7 +42,8 @@ public class CommentService {
     }
 
     public List<Comment> getList(Long issueid){
-        List<Comment> comments = this.commentRepository.findAllByIssue(issueid);
+        Issue issue = this.issueRepository.findById(issueid).get();
+        List<Comment> comments = this.commentRepository.findAllByIssue(issue);
         return comments;
     }
 

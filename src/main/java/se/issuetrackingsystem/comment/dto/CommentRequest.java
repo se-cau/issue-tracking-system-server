@@ -1,8 +1,7 @@
-package se.issuetrackingsystem.Comment;
+package se.issuetrackingsystem.comment.dto;
 
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 

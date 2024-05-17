@@ -1,11 +1,13 @@
-package se.issuetrackingsystem.Comment;
+package se.issuetrackingsystem.comment.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import se.issuetrackingsystem.Issue.Issue;
-import se.issuetrackingsystem.Issue.IssueService;
+import se.issuetrackingsystem.comment.dto.CommentRequest;
+import se.issuetrackingsystem.comment.service.CommentService;
+import se.issuetrackingsystem.comment.domain.Comment;
+import se.issuetrackingsystem.issue.service.IssueService;
 
 @Slf4j
 @RequestMapping("/comments")
