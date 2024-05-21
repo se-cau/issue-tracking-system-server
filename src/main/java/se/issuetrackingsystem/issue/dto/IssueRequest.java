@@ -14,7 +14,7 @@ public class IssueRequest {
     @NotEmpty
     private String description;
 
-    private Long assignee_id;
+    private Long assigneeid;
 
     private Issue.Status status;
 

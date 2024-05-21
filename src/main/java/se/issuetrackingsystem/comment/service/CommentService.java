@@ -16,9 +16,9 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    private CommentRepository commentRepository;
-    private IssueRepository issueRepository;
-    private UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final IssueRepository issueRepository;
+    private final UserRepository userRepository;
 
     public Comment create(Long issueid, String content, Long authorid){
         Comment comment = new Comment();

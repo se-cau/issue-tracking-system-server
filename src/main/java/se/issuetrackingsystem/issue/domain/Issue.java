@@ -50,7 +50,7 @@ public class Issue {
 
     private LocalDateTime created_at;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
     public enum Status{
