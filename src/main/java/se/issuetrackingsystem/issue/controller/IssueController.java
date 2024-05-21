@@ -57,7 +57,7 @@ public class IssueController {
     @PostMapping("assignees")
     public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueid") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.setAssignee(issue,issueRequest.getAssignee_id());
+        this.issueService.setAssignee(issue,issueRequest.getAssigneeid());
     }
 
     @GetMapping("{status}")
