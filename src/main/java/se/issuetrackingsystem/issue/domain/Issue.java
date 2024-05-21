@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 
 import lombok.Getter;
 import lombok.Setter;
-import se.issuetrackingsystem.comment.Comment;
+import se.issuetrackingsystem.comment.domain.Comment;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.user.domain.User;
 
@@ -50,7 +50,7 @@ public class Issue {
 
     private LocalDateTime created_at;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
 
     public enum Status{
