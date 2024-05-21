@@ -1,4 +1,4 @@
-package se.issuetrackingsystem.exception;
+package se.issuetrackingsystem.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
