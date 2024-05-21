@@ -10,20 +10,21 @@ import se.issuetrackingsystem.project.domain.Project;
 @NoArgsConstructor
 public class ProjectContributor {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_contributor_id")
-    private Long id;
+    @EmbeddedId
+    private ProjectContributorPK projectContributorPK;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
+    @MapsId("projectId")
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contributor_id")
+    @MapsId("contributorId")
     private Contributor contributor;
 
-    public ProjectContributor(Project project, Contributor contributor) {
+    public ProjectContributor(ProjectContributorPK projectContributorPK, Project project, Contributor contributor) {
+        this.projectContributorPK = projectContributorPK;
         this.project = project;
         this.contributor = contributor;
     }

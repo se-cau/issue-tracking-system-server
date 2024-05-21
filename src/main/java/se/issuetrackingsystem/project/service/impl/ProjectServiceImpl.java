@@ -10,10 +10,7 @@ import se.issuetrackingsystem.project.dto.ProjectRequest;
 import se.issuetrackingsystem.project.dto.ProjectResponse;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.project.service.ProjectService;
-import se.issuetrackingsystem.user.domain.Admin;
-import se.issuetrackingsystem.user.domain.Contributor;
-import se.issuetrackingsystem.user.domain.ProjectContributor;
-import se.issuetrackingsystem.user.domain.User;
+import se.issuetrackingsystem.user.domain.*;
 import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
@@ -83,7 +80,8 @@ public class ProjectServiceImpl implements ProjectService {
                 .map(id -> {
                     Contributor contributor = (Contributor) userRepository.findById(id)
                             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-                    return new ProjectContributor(project, contributor);
+                    ProjectContributorPK projectContributorPK = new ProjectContributorPK(contributor.getId(), project.getId());
+                    return new ProjectContributor(projectContributorPK, project, contributor);
                 })
                 .toList();
 
