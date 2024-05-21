@@ -6,10 +6,13 @@ import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
+import se.issuetrackingsystem.user.domain.Dev;
 import se.issuetrackingsystem.user.domain.User;
+import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,7 @@ public class IssueService {
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
+    private final ProjectContributorRepository projectContributorRepository;
 
     public Issue create(Long projectid, String title, String description, Long reporterid){
         Issue issue = new Issue();
@@ -82,4 +86,24 @@ public class IssueService {
         issue.setStatus(status);
         this.issueRepository.save(issue);
     }
+    /*
+    public User candidateUser(Issue issue)
+    {
+        Project project = issue.getProject();
+        List<User> users = this.userRepository.findAll();
+        ArrayList<User> devs = new ArrayList<>();
+        for(User u : users){
+            if(u instanceof Dev){
+                devs.add(u);
+            }
+        }
+        List<Project> projs;
+        for(User u :devs){
+            projs = this.projectContributorRepository.findAllByContributor(u);
+            if(!projs.contains(project)){
+                devs.remove(u);
+            }
+        }
+    }
+    */
 }
