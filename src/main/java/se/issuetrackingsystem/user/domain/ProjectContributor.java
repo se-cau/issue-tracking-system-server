@@ -11,7 +11,7 @@ import se.issuetrackingsystem.project.domain.Project;
 public class ProjectContributor {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "project_contributor_id")
     private Long id;
 
