@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/projects")
+@RequestMapping("api/v1/projects/")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -26,7 +26,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.getProjects(userId));
     }
 
-    @GetMapping("/{projectId}")
+    @GetMapping("{projectId}/")
     public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId) {
         return ResponseEntity.ok(projectService.getProject(projectId));
     }

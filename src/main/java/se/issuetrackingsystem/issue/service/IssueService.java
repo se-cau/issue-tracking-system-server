@@ -6,6 +6,7 @@ import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
+import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
@@ -45,6 +46,13 @@ public class IssueService {
         List<Issue> issues;
         Project project = this.projectRepository.findById(projectid).get();
         issues = this.issueRepository.findAllByProject(project);
+        return issues;
+    }
+
+    public List<Issue> getListByAssignee(Long userid){
+        List<Issue> issues;
+        User user = this.userRepository.findById(userid).get();
+        issues = this.issueRepository.findAllByAssignee(user);
         return issues;
     }
 
