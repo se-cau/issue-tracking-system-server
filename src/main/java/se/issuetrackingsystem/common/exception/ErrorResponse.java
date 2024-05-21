@@ -1,4 +1,4 @@
-package se.issuetrackingsystem.exception;
+package se.issuetrackingsystem.common.exception;
 
 import lombok.Getter;
 import java.time.LocalDateTime;
