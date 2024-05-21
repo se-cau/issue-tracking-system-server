@@ -3,7 +3,9 @@ package se.issuetrackingsystem.issue.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.issuetrackingsystem.issue.dto.IssueStatisticsResponse;
 import se.issuetrackingsystem.issue.service.IssueService;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.dto.IssueRequest;
@@ -86,5 +88,10 @@ public class IssueController {
             responses.add(new IssueResponse(i));
         }
         return responses;
+    }
+
+    @GetMapping("statistics/{projectId}")
+    public ResponseEntity<IssueStatisticsResponse> getIssueStatistics(@PathVariable Long projectId) {
+        return ResponseEntity.ok(issueService.getIssueStatistics(projectId));
     }
 }
