@@ -35,7 +35,7 @@ public class IssueController {
         return responses;
     }
 
-    @GetMapping("detail")
+    @GetMapping("detail/")
     public IssueResponse issueDetail(@RequestParam("issueid") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         IssueResponse issueResponse = new IssueResponse(issue);
@@ -54,13 +54,13 @@ public class IssueController {
         this.issueService.modify(issue,issueRequest.getDescription());
     }
 
-    @PostMapping("assignees")
+    @PostMapping("assignees/")
     public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueid") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         this.issueService.setAssignee(issue,issueRequest.getAssigneeid());
     }
 
-    @GetMapping("{status}")
+    @GetMapping("{status}/")
     public List<IssueResponse> issueCheckByStatus(@PathVariable("status") Issue.Status status,@RequestParam("projectid") Long projectid){
         List<Issue> issues;
         issues=this.issueService.getList(projectid,status);
@@ -71,9 +71,20 @@ public class IssueController {
         return responses;
     }
 
-    @PatchMapping("status")
+    @PatchMapping("status/")
     public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueid") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         this.issueService.changeStatus(issue,issueRequest.getStatus());
+    }
+
+    @GetMapping("assigned/")
+    public List<IssueResponse> issueCheckByAssignee(@RequestParam("userid") Long userid){
+        List<Issue> issues;
+        issues=this.issueService.getListByAssignee(userid);
+        List<IssueResponse> responses = new ArrayList<>();
+        for(Issue i : issues){
+            responses.add(new IssueResponse(i));
+        }
+        return responses;
     }
 }
