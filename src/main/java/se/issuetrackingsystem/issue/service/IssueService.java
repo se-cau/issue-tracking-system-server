@@ -98,16 +98,24 @@ public class IssueService {
 
         // Reporter 분포
         Map<String, Long> reporterDistribution = issues.stream()
-                .collect(Collectors.groupingBy(issue -> issue.getReporter().getUsername(), Collectors.counting()));
+                .map(issue -> Optional.ofNullable(issue.getReporter())
+                        .map(User::getUsername)
+                        .orElse("No Reporter"))
+                .collect(Collectors.groupingBy(reporter -> reporter, Collectors.counting()));
 
         // Assignee 분포
         Map<String, Long> assigneeDistribution = issues.stream()
-                .collect(Collectors.groupingBy(issue -> issue.getAssignee().getUsername(), Collectors.counting()));
+                .map(issue -> Optional.ofNullable(issue.getAssignee())
+                        .map(User::getUsername)
+                        .orElse("No Assignee"))
+                .collect(Collectors.groupingBy(assignee -> assignee, Collectors.counting()));
+
 
         // 댓글 개수 상위 이슈 리스트
-        List<Issue> topCommentedIssues = issues.stream()
+        List<String> topCommentedIssues = issues.stream()
                 .sorted(Comparator.comparingInt((Issue issue) -> issue.getCommentList().size()).reversed())
                 .limit(5) // 필요한 개수만큼 제한
+                .map(Issue::getTitle)
                 .collect(Collectors.toList());
 
         return new IssueStatisticsResponse(statusDistribution, reporterDistribution, assigneeDistribution, topCommentedIssues);
