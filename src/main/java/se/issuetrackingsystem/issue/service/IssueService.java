@@ -1,6 +1,8 @@
 package se.issuetrackingsystem.issue.service;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
@@ -12,9 +14,7 @@ import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -86,17 +86,18 @@ public class IssueService {
         issue.setStatus(status);
         this.issueRepository.save(issue);
     }
-    /*
     public User candidateUser(Issue issue)
     {
         Project project = issue.getProject();
         List<User> users = this.userRepository.findAll();
         ArrayList<User> devs = new ArrayList<>();
+        //모든 developer 추가
         for(User u : users){
             if(u instanceof Dev){
                 devs.add(u);
             }
         }
+        //프로젝트에 할당된 개발자 식별
         List<Project> projs;
         for(User u :devs){
             projs = this.projectContributorRepository.findAllByContributor(u);
@@ -104,6 +105,23 @@ public class IssueService {
                 devs.remove(u);
             }
         }
+        //issue title,description 단어 파싱
+        String issueTitle = issue.getTitle();
+        ArrayList<String> titleWords = new ArrayList<>(Arrays.asList(issueTitle.split(" ")));
+        String issueDesc = issue.getDescription();
+        ArrayList<String> descWords = new ArrayList<>(Arrays.asList(issueDesc.split(" ")));
+
     }
-    */
+
+    @Getter
+    @Setter
+    public class devInfo{
+        private Long id;
+        private ArrayList<Issue> fixedIssues;
+        private Map<String,Integer> issueTitlewords;
+        private Map<String,Integer> issueDescriptionwords;
+    }
+    public devInfo(List<Issue> issues){
+        issues.
+    }
 }
