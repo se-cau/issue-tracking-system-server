@@ -43,9 +43,6 @@ public class Issue {
     @Enumerated(EnumType.STRING)
     private Priority priority = Priority.MAJOR;
 
-    @ManyToOne
-    private User author;
-
     private LocalDateTime updated_at;
 
     private LocalDateTime created_at;

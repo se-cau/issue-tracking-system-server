@@ -10,9 +10,11 @@ import se.issuetrackingsystem.issue.service.IssueService;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.dto.IssueRequest;
 import se.issuetrackingsystem.issue.dto.IssueResponse;
+import se.issuetrackingsystem.user.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequestMapping("api/v1/issues/")
@@ -76,7 +78,7 @@ public class IssueController {
     @PatchMapping("status/")
     public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.changeStatus(issue,issueRequest.getStatus());
+        this.issueService.changeStatus(issueRequest,issue);
     }
 
     @GetMapping("assigned/")
@@ -90,6 +92,10 @@ public class IssueController {
         return responses;
     }
 
+    @GetMapping("candidates/")
+    public ResponseEntity<User> issueCandidate(@RequestParam("issueId") Long issueid){
+        User user = this.issueService.candidateUser(this.issueService.getIssue(issueid)).get();
+        return ResponseEntity.ok(user);
     @GetMapping("statistics/{projectId}")
     public ResponseEntity<IssueStatisticsResponse> getIssueStatistics(@PathVariable Long projectId) {
         return ResponseEntity.ok(issueService.getIssueStatistics(projectId));

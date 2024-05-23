@@ -8,10 +8,8 @@ import se.issuetrackingsystem.issue.domain.Issue;
 @Getter
 @Setter
 public class IssueRequest {
-    @NotEmpty
     private String title;
 
-    @NotEmpty
     private String description;
 
     private Long assigneeid;
