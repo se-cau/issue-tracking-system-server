@@ -93,9 +93,10 @@ public class IssueController {
     }
 
     @GetMapping("candidates/")
-    public ResponseEntity<User> issueCandidate(@RequestParam("issueId") Long issueid){
+    public ResponseEntity<User> issueCandidate(@RequestParam("issueId") Long issueid) {
         User user = this.issueService.candidateUser(this.issueService.getIssue(issueid)).get();
         return ResponseEntity.ok(user);
+    }
     @GetMapping("statistics/{projectId}")
     public ResponseEntity<IssueStatisticsResponse> getIssueStatistics(@PathVariable Long projectId) {
         return ResponseEntity.ok(issueService.getIssueStatistics(projectId));

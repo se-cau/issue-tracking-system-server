@@ -175,40 +175,38 @@ public class IssueService {
         private Map<String, Integer> issuesDescriptionWords = new HashMap<>();
         private Integer points;
 
-        devInfo(User dev ,List<Issue> issues) {
-            this.points=0;
-            this.user=dev;
+        devInfo(User dev, List<Issue> issues) {
+            this.points = 0;
+            this.user = dev;
 
             fixedIssues = new ArrayList<>(issues);
             ArrayList<String> sTemp;
-            for(Issue i : fixedIssues) {
-                 sTemp = new ArrayList<>(Arrays.asList(i.getTitle().split(" ")));
-                 for(String s : sTemp){
-                     if(issuesTitleWords.containsKey(s)){
-                         issuesTitleWords.put(s,issuesTitleWords.get(s)+1);
-                     }
-                     else{
-                         issuesTitleWords.put(s,1);
-                     }
-                 }
-            }
-            for(Issue i : fixedIssues) {
-                sTemp = new ArrayList<>(Arrays.asList(i.getDescription().split(" ")));
-                for(String s : sTemp){
-                    if(issuesDescriptionWords.containsKey(s)){
-                        issuesDescriptionWords.put(s,issuesDescriptionWords.get(s)+1);
+            for (Issue i : fixedIssues) {
+                sTemp = new ArrayList<>(Arrays.asList(i.getTitle().split(" ")));
+                for (String s : sTemp) {
+                    if (issuesTitleWords.containsKey(s)) {
+                        issuesTitleWords.put(s, issuesTitleWords.get(s) + 1);
+                    } else {
+                        issuesTitleWords.put(s, 1);
                     }
-                    else{
-                        issuesDescriptionWords.put(s,1);
+                }
+            }
+            for (Issue i : fixedIssues) {
+                sTemp = new ArrayList<>(Arrays.asList(i.getDescription().split(" ")));
+                for (String s : sTemp) {
+                    if (issuesDescriptionWords.containsKey(s)) {
+                        issuesDescriptionWords.put(s, issuesDescriptionWords.get(s) + 1);
+                    } else {
+                        issuesDescriptionWords.put(s, 1);
                     }
                 }
             }
         }
 
-        public void addPoints(Integer value){
-            this.points+=value;
+        public void addPoints(Integer value) {
+            this.points += value;
         }
-
+    }
     public IssueStatisticsResponse getIssueStatistics(Long projectId) {
 
         Project project = projectRepository.findById(projectId)
