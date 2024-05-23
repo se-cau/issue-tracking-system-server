@@ -5,8 +5,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
+import se.issuetrackingsystem.common.exception.CustomException;
+import se.issuetrackingsystem.common.exception.ErrorCode;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.dto.IssueRequest;
+import se.issuetrackingsystem.issue.dto.IssueStatisticsResponse;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
@@ -18,6 +21,7 @@ import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -204,5 +208,39 @@ public class IssueService {
         public void addPoints(Integer value){
             this.points+=value;
         }
+
+    public IssueStatisticsResponse getIssueStatistics(Long projectId) {
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        List<Issue> issues = issueRepository.findAllByProject(project);
+
+        // Issue 상태 분포
+        Map<Issue.Status, Long> statusDistribution = issues.stream()
+                .collect(Collectors.groupingBy(Issue::getStatus, Collectors.counting()));
+
+        // Reporter 분포
+        Map<String, Long> reporterDistribution = issues.stream()
+                .map(issue -> Optional.ofNullable(issue.getReporter())
+                        .map(User::getUsername)
+                        .orElse("No Reporter"))
+                .collect(Collectors.groupingBy(reporter -> reporter, Collectors.counting()));
+
+        // Assignee 분포
+        Map<String, Long> assigneeDistribution = issues.stream()
+                .map(issue -> Optional.ofNullable(issue.getAssignee())
+                        .map(User::getUsername)
+                        .orElse("No Assignee"))
+                .collect(Collectors.groupingBy(assignee -> assignee, Collectors.counting()));
+
+
+        // 댓글 개수 상위 이슈 리스트
+        List<String> topCommentedIssues = issues.stream()
+                .sorted(Comparator.comparingInt((Issue issue) -> issue.getCommentList().size()).reversed())
+                .limit(5) // 필요한 개수만큼 제한
+                .map(Issue::getTitle)
+                .collect(Collectors.toList());
+
+        return new IssueStatisticsResponse(statusDistribution, reporterDistribution, assigneeDistribution, topCommentedIssues);
     }
 }

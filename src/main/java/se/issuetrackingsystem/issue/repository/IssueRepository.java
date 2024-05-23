@@ -6,6 +6,7 @@ import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.user.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IssueRepository extends JpaRepository<Issue,Long> {
     List<Issue> findAllByProject(Project project);
