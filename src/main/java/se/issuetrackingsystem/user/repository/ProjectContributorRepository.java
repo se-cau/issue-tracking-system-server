@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface ProjectContributorRepository extends JpaRepository<ProjectContributor, Long> {
-    List<Project> findAllByContributor(User contributor);
+    List<ProjectContributor> findAllByContributor(User contributor);
 }

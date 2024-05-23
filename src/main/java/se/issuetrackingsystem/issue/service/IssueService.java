@@ -11,6 +11,7 @@ import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.user.domain.Dev;
+import se.issuetrackingsystem.user.domain.ProjectContributor;
 import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
@@ -112,6 +113,7 @@ public class IssueService {
         Project project = issue.getProject();
         List<User> users = this.userRepository.findAll();
         ArrayList<User> devs = new ArrayList<>();
+        ArrayList<User> projectDevs = new ArrayList<>();
         //모든 developer 추가
         for(User u : users){
             if(u instanceof Dev){
@@ -119,11 +121,16 @@ public class IssueService {
             }
         }
         //프로젝트에 할당된 개발자 식별
+        List<ProjectContributor> proconts;
         List<Project> projs;
-        for(User u :devs){
-            projs = this.projectContributorRepository.findAllByContributor(u);
-            if(!projs.contains(project)){
-                devs.remove(u);
+        for(User u : devs){
+            projs = new ArrayList<>();
+            proconts = this.projectContributorRepository.findAllByContributor(u);
+            for(ProjectContributor pc : proconts){
+                projs.add(pc.getProject());
+            }
+            if(projs.contains(project)){
+                projectDevs.add(u);
             }
         }
         //issue title,description 단어 파싱
