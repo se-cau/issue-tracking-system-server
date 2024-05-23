@@ -1,5 +1,6 @@
 package se.issuetrackingsystem.issue.service;
 
+import jakarta.validation.constraints.Null;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -86,7 +87,7 @@ public class IssueService {
         issue.setStatus(status);
         this.issueRepository.save(issue);
     }
-    public User candidateUser(Issue issue)
+    public Optional<User> candidateUser(Issue issue)
     {
         Project project = issue.getProject();
         List<User> users = this.userRepository.findAll();
@@ -111,17 +112,70 @@ public class IssueService {
         String issueDesc = issue.getDescription();
         ArrayList<String> descWords = new ArrayList<>(Arrays.asList(issueDesc.split(" ")));
 
+        //식별된 dev에 대한 정보객체 생성
+        Integer maxP = 0;
+        Optional<User> result = Optional.empty();
+        for(User d : devs){
+            devInfo tempInfo = new devInfo(d,this.issueRepository.findAllByFixer(d));
+            for(String s : titleWords){
+                if(tempInfo.getIssuesTitleWords().containsKey(s)){
+                    tempInfo.addPoints(tempInfo.getIssuesTitleWords().get(s)*10);
+                }
+            }
+            for(String s : descWords){
+                if(tempInfo.getIssuesDescriptionWords().containsKey(s)){
+                    tempInfo.addPoints(tempInfo.getIssuesDescriptionWords().get(s));
+                }
+            }
+            if(tempInfo.getPoints() > maxP){
+                maxP= tempInfo.getPoints();
+                result=Optional.ofNullable(tempInfo.getUser());
+            }
+        }
+
+        return result;
     }
 
     @Getter
-    @Setter
-    public class devInfo{
-        private Long id;
+    public class devInfo {
+        private User user;
         private ArrayList<Issue> fixedIssues;
-        private Map<String,Integer> issueTitlewords;
-        private Map<String,Integer> issueDescriptionwords;
-    }
-    public devInfo(List<Issue> issues){
-        issues.
+        private Map<String, Integer> issuesTitleWords = new HashMap<>();
+        private Map<String, Integer> issuesDescriptionWords = new HashMap<>();
+        private Integer points;
+
+        devInfo(User dev ,List<Issue> issues) {
+            this.points=0;
+            this.user=dev;
+
+            fixedIssues = new ArrayList<>(issues);
+            ArrayList<String> sTemp;
+            for(Issue i : fixedIssues) {
+                 sTemp = new ArrayList<>(Arrays.asList(i.getTitle().split(" ")));
+                 for(String s : sTemp){
+                     if(issuesTitleWords.containsKey(s)){
+                         issuesTitleWords.put(s,issuesTitleWords.get(s)+1);
+                     }
+                     else{
+                         issuesTitleWords.put(s,1);
+                     }
+                 }
+            }
+            for(Issue i : fixedIssues) {
+                sTemp = new ArrayList<>(Arrays.asList(i.getDescription().split(" ")));
+                for(String s : sTemp){
+                    if(issuesDescriptionWords.containsKey(s)){
+                        issuesDescriptionWords.put(s,issuesDescriptionWords.get(s)+1);
+                    }
+                    else{
+                        issuesDescriptionWords.put(s,1);
+                    }
+                }
+            }
+        }
+
+        public void addPoints(Integer value){
+            this.points+=value;
+        }
     }
 }

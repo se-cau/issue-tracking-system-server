@@ -3,14 +3,17 @@ package se.issuetrackingsystem.issue.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import se.issuetrackingsystem.issue.service.IssueService;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.dto.IssueRequest;
 import se.issuetrackingsystem.issue.dto.IssueResponse;
+import se.issuetrackingsystem.user.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RequestMapping("api/v1/issues/")
@@ -86,5 +89,11 @@ public class IssueController {
             responses.add(new IssueResponse(i));
         }
         return responses;
+    }
+
+    @GetMapping("candidates/")
+    public ResponseEntity<User> issueCandidate(@RequestParam("issueId") Long issueid){
+        User user = this.issueService.candidateUser(this.issueService.getIssue(issueid)).get();
+        return ResponseEntity.ok(user);
     }
 }
