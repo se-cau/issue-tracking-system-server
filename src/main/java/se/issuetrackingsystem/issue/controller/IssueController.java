@@ -77,7 +77,7 @@ public class IssueController {
     @PatchMapping("status/")
     public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.changeStatus(issue,issueRequest.getStatus());
+        this.issueService.changeStatus(issueRequest.getUserid(),issue);
     }
 
     @GetMapping("assigned/")

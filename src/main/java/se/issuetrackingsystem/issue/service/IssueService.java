@@ -83,8 +83,23 @@ public class IssueService {
         this.issueRepository.save(issue);
     }
 
-    public void changeStatus(Issue issue, Issue.Status status){
-        issue.setStatus(status);
+    public void changeStatus(Long userid,Issue issue){
+        if(issue.getStatus()== Issue.Status.ASSIGNED){
+            issue.setStatus(Issue.Status.FIXED);
+            issue.setFixer(this.userRepository.findById(userid).get());
+        }
+        else if(issue.getStatus()== Issue.Status.FIXED){
+            issue.setStatus(Issue.Status.RESOLVED);
+        }
+        else if(issue.getStatus()== Issue.Status.RESOLVED){
+            issue.setStatus(Issue.Status.CLOSE);
+        }
+        else if(issue.getStatus()== Issue.Status.CLOSE){
+            issue.setStatus(Issue.Status.REOPENED);
+        }
+        else if(issue.getStatus()== Issue.Status.REOPENED){
+            issue.setStatus(Issue.Status.CLOSE);
+        }
         this.issueRepository.save(issue);
     }
     public Optional<User> candidateUser(Issue issue)
