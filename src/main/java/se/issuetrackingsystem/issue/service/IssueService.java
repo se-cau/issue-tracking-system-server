@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 import se.issuetrackingsystem.issue.domain.Issue;
+import se.issuetrackingsystem.issue.dto.IssueRequest;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
@@ -83,10 +84,14 @@ public class IssueService {
         this.issueRepository.save(issue);
     }
 
-    public void changeStatus(Long userid,Issue issue){
-        if(issue.getStatus()== Issue.Status.ASSIGNED){
+    public void changeStatus(IssueRequest issueRequest, Issue issue){
+        if(issue.getStatus()== Issue.Status.NEW){
+            issue.setStatus(Issue.Status.ASSIGNED);
+            issue.setAssignee(this.userRepository.findById(issueRequest.getUserid()).get());
+        }
+        else if(issue.getStatus()== Issue.Status.ASSIGNED){
             issue.setStatus(Issue.Status.FIXED);
-            issue.setFixer(this.userRepository.findById(userid).get());
+            issue.setFixer(this.userRepository.findById(issueRequest.getUserid()).get());
         }
         else if(issue.getStatus()== Issue.Status.FIXED){
             issue.setStatus(Issue.Status.RESOLVED);
