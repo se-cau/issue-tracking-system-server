@@ -11,9 +11,11 @@ import se.issuetrackingsystem.user.domain.*;
 import se.issuetrackingsystem.user.dto.LoginRequest;
 import se.issuetrackingsystem.user.dto.RegisterRequest;
 import se.issuetrackingsystem.user.dto.LoginResponse;
+import se.issuetrackingsystem.user.dto.UserResponse;
 import se.issuetrackingsystem.user.repository.UserRepository;
 import se.issuetrackingsystem.user.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -53,6 +55,17 @@ public class UserServiceImpl implements UserService {
         }
 
         return new LoginResponse(user);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserResponse> getUsers() {
+
+        List<User> users = userRepository.findAll();
+        return users
+                .stream()
+                .map(UserResponse::new)
+                .toList();
     }
 
     private boolean isDuplicateUsername(String username) {

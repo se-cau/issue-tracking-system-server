@@ -11,10 +11,14 @@ public class UserResponse {
     private final Long userId;
 
     @NotBlank
+    private final String username;
+
+    @NotBlank
     private final String role;
 
     public UserResponse(User user) {
         this.userId = user.getId();
+        this.username = user.getUsername();
         this.role = user.getRole();
     }
 
