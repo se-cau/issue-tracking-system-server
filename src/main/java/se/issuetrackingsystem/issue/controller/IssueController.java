@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@RequestMapping("api/v1/issues/")
+@RequestMapping("api/v1/issues")
 @RequiredArgsConstructor
 @RestController
 public class IssueController {
@@ -39,7 +39,7 @@ public class IssueController {
         return responses;
     }
 
-    @GetMapping("details/")
+    @GetMapping("/details")
     public IssueResponse issueDetail(@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         IssueResponse issueResponse = new IssueResponse(issue);
@@ -58,13 +58,13 @@ public class IssueController {
         this.issueService.modify(issue,issueRequest.getDescription());
     }
 
-    @PostMapping("assignees/")
+    @PostMapping("/assignees")
     public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         this.issueService.setAssignee(issue,issueRequest.getAssigneeid());
     }
 
-    @GetMapping("{status}/")
+    @GetMapping("/{status}")
     public List<IssueResponse> issueCheckByStatus(@PathVariable("status") Issue.Status status,@RequestParam("projectId") Long projectid){
         List<Issue> issues;
         issues=this.issueService.getList(projectid,status);
@@ -75,13 +75,13 @@ public class IssueController {
         return responses;
     }
 
-    @PatchMapping("status/")
+    @PatchMapping("/status")
     public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         this.issueService.changeStatus(issueRequest,issue);
     }
 
-    @GetMapping("assigned/")
+    @GetMapping("/assigned")
     public List<IssueResponse> issueCheckByAssignee(@RequestParam("userId") Long userid){
         List<Issue> issues;
         issues=this.issueService.getListByAssignee(userid);
@@ -92,12 +92,13 @@ public class IssueController {
         return responses;
     }
 
-    @GetMapping("candidates/")
+    @GetMapping("/candidates")
     public ResponseEntity<User> issueCandidate(@RequestParam("issueId") Long issueid) {
         User user = this.issueService.candidateUser(this.issueService.getIssue(issueid)).get();
         return ResponseEntity.ok(user);
     }
-    @GetMapping("statistics/{projectId}")
+
+    @GetMapping("/statistics/{projectId}")
     public ResponseEntity<IssueStatisticsResponse> getIssueStatistics(@PathVariable Long projectId) {
         return ResponseEntity.ok(issueService.getIssueStatistics(projectId));
     }

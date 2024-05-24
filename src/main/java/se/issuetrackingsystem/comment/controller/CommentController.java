@@ -8,7 +8,7 @@ import se.issuetrackingsystem.comment.service.CommentService;
 import se.issuetrackingsystem.comment.domain.Comment;
 
 @Slf4j
-@RequestMapping("api/v1/comments/")
+@RequestMapping("api/v1/comments")
 @RequiredArgsConstructor
 @RestController
 public class CommentController {
