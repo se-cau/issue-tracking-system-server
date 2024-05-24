@@ -42,3 +42,17 @@ jobs:
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/issue-tracking-system:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/issue-tracking-system:latest
+            docker stop issue-tracking-system || true
+            docker rm issue-tracking-system || true
+            docker run -d -p 80:8080 --name issue-tracking-system ${{ secrets.DOCKERHUB_USERNAME }}/issue-tracking-system:latest
+            sleep 10
+            docker logs issue-tracking-system
