@@ -11,9 +11,11 @@ import se.issuetrackingsystem.user.domain.*;
 import se.issuetrackingsystem.user.dto.LoginRequest;
 import se.issuetrackingsystem.user.dto.RegisterRequest;
 import se.issuetrackingsystem.user.dto.LoginResponse;
+import se.issuetrackingsystem.user.dto.UserResponse;
 import se.issuetrackingsystem.user.repository.UserRepository;
 import se.issuetrackingsystem.user.service.UserService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,23 +57,29 @@ public class UserServiceImpl implements UserService {
         return new LoginResponse(user);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<UserResponse> getUsers() {
+
+        List<User> users = userRepository.findAll();
+        return users
+                .stream()
+                .map(UserResponse::new)
+                .toList();
+    }
+
     private boolean isDuplicateUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.isPresent();
     }
 
     private User createUser(String role, String username, String password) {
-        switch (role) {
-            case "Admin":
-                return new Admin(username, password);
-            case "PL":
-                return new PL(username, password);
-            case "Dev":
-                return new Dev(username, password);
-            case "Tester":
-                return new Tester(username, password);
-            default:
-                throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
-        }
+        return switch (role) {
+            case "Admin" -> new Admin(username, password);
+            case "PL" -> new PL(username, password);
+            case "Dev" -> new Dev(username, password);
+            case "Tester" -> new Tester(username, password);
+            default -> throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+        };
     }
 }

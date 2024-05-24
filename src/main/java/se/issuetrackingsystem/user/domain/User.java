@@ -39,4 +39,8 @@ public abstract class User {
         this.password = password;
         this.createdDate = LocalDateTime.now();
     }
+
+    public String getRole() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+    }
 }
