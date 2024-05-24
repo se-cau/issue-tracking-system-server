@@ -19,6 +19,12 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Set up environment variables
+        run: |
+          echo "DB_URL=${{ secrets.DB_URL }}" >> $GITHUB_ENV
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> $GITHUB_ENV
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Build with Gradle
         run: ./gradlew build
 
