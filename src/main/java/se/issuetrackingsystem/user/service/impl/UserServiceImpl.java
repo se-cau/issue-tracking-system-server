@@ -61,17 +61,12 @@ public class UserServiceImpl implements UserService {
     }
 
     private User createUser(String role, String username, String password) {
-        switch (role) {
-            case "Admin":
-                return new Admin(username, password);
-            case "PL":
-                return new PL(username, password);
-            case "Dev":
-                return new Dev(username, password);
-            case "Tester":
-                return new Tester(username, password);
-            default:
-                throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
-        }
+        return switch (role) {
+            case "Admin" -> new Admin(username, password);
+            case "PL" -> new PL(username, password);
+            case "Dev" -> new Dev(username, password);
+            case "Tester" -> new Tester(username, password);
+            default -> throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+        };
     }
 }
