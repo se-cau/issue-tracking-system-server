@@ -13,6 +13,7 @@ public class IssueResponse {
 
     public IssueResponse(Issue issue){
         this.setTitle(issue.getTitle());
+        this.setId(issue.getId());
         this.setDescription(issue.getDescription());
         if(issue.getReporter()!=null) {
             this.setReporter(issue.getReporter().getUsername());
@@ -28,6 +29,10 @@ public class IssueResponse {
         this.setUpdated_at(issue.getUpdated_at());
         this.setStatus(issue.getStatus());
     }
+
+    @NotEmpty
+    private Long id;
+
     @NotEmpty
     private String title;
 
@@ -39,8 +44,6 @@ public class IssueResponse {
     private String assignee;
 
     private String fixer;
-
-    private Long number;
 
     private Issue.Status status;
 
