@@ -29,21 +29,20 @@ public class IssueController {
     }
 
     @GetMapping
-    public List<IssueResponse> issueCheck(@RequestParam("projectId") Long projectid){
-        List<Issue> issues;
-        issues=this.issueService.getList(projectid);
+    public ResponseEntity<List<IssueResponse>> issueCheck(@RequestParam("projectId") Long projectid){
+        List<Issue> issues = this.issueService.getList(projectid);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));
         }
-        return responses;
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/details")
-    public IssueResponse issueDetail(@RequestParam("issueId") Long issueid){
+    public ResponseEntity<IssueResponse> issueDetail(@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
         IssueResponse issueResponse = new IssueResponse(issue);
-        return issueResponse;
+        return ResponseEntity.ok(issueResponse);
     }
 
     @DeleteMapping
@@ -65,14 +64,13 @@ public class IssueController {
     }
 
     @GetMapping("/{status}")
-    public List<IssueResponse> issueCheckByStatus(@PathVariable("status") Issue.Status status,@RequestParam("projectId") Long projectid){
-        List<Issue> issues;
-        issues=this.issueService.getList(projectid,status);
+    public ResponseEntity<List<IssueResponse>> issueCheckByStatus(@PathVariable("status") Issue.Status status,@RequestParam("projectId") Long projectid){
+        List<Issue> issues = this.issueService.getList(projectid,status);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));
         }
-        return responses;
+        return ResponseEntity.ok(responses);
     }
 
     @PatchMapping("/status")
@@ -82,14 +80,13 @@ public class IssueController {
     }
 
     @GetMapping("/assigned")
-    public List<IssueResponse> issueCheckByAssignee(@RequestParam("userId") Long userid){
-        List<Issue> issues;
-        issues=this.issueService.getListByAssignee(userid);
+    public ResponseEntity<List<IssueResponse>> issueCheckByAssignee(@RequestParam("userId") Long userid){
+        List<Issue> issues = this.issueService.getListByAssignee(userid);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));
         }
-        return responses;
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/candidates")

@@ -33,43 +33,37 @@ public class IssueService {
 
     public Issue create(Long projectid, String title, String description, Long reporterid){
         Issue issue = new Issue();
-        Project project = this.projectRepository.findById(projectid).get();
+        Project project = this.projectRepository.findById(projectid).orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND));
         issue.setProject(project);
         issue.setTitle(title);
         issue.setDescription(description);
-        issue.setReporter(userRepository.findById(reporterid).get());
+        issue.setReporter(userRepository.findById(reporterid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         issue.setCreated_at(LocalDateTime.now());
         this.issueRepository.save(issue);
         return issue;
     }
 
     public Issue getIssue(Long id){
-        Optional<Issue> issue=this.issueRepository.findById(id);
-        if(issue.isPresent()){
-            return issue.get();
-        }
-        else{
-            throw new RuntimeException();
-        }
+        return this.issueRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.ISSUE_NOT_FOUND));
     }
 
     public List<Issue> getList(Long projectid){
         List<Issue> issues;
-        Project project = this.projectRepository.findById(projectid).get();
+        Project project = this.projectRepository.findById(projectid).orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
         issues = this.issueRepository.findAllByProject(project);
         return issues;
     }
 
     public List<Issue> getListByAssignee(Long userid){
         List<Issue> issues;
-        User user = this.userRepository.findById(userid).get();
+        User user = this.userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         issues = this.issueRepository.findAllByAssignee(user);
         return issues;
     }
 
     public List<Issue> getList(Long projectid, Issue.Status status){
         List<Issue> issues;
-        Project project = this.projectRepository.findById(projectid).get();
+        Project project = this.projectRepository.findById(projectid).orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
         issues = this.issueRepository.findAllByProjectAndStatus(project,status);
         return issues;
     }
@@ -85,18 +79,18 @@ public class IssueService {
     }
 
     public void setAssignee(Issue issue, Long assigneeid){
-        issue.setAssignee(userRepository.findById(assigneeid).get());
+        issue.setAssignee(userRepository.findById(assigneeid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         this.issueRepository.save(issue);
     }
 
     public void changeStatus(IssueRequest issueRequest, Issue issue){
         if(issue.getStatus()== Issue.Status.NEW){
             issue.setStatus(Issue.Status.ASSIGNED);
-            issue.setAssignee(this.userRepository.findById(issueRequest.getUserid()).get());
+            issue.setAssignee(this.userRepository.findById(issueRequest.getUserid()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         }
         else if(issue.getStatus()== Issue.Status.ASSIGNED){
             issue.setStatus(Issue.Status.FIXED);
-            issue.setFixer(this.userRepository.findById(issueRequest.getUserid()).get());
+            issue.setFixer(this.userRepository.findById(issueRequest.getUserid()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         }
         else if(issue.getStatus()== Issue.Status.FIXED){
             issue.setStatus(Issue.Status.RESOLVED);
