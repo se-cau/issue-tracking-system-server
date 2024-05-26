@@ -37,7 +37,9 @@ public class IssueService {
         issue.setProject(project);
         issue.setTitle(title);
         issue.setDescription(description);
-        issue.setPriority(priority);
+        if(priority!=null) {
+            issue.setPriority(priority);
+        }
         issue.setReporter(userRepository.findById(reporterid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         issue.setCreated_at(LocalDateTime.now());
         this.issueRepository.save(issue);
@@ -80,19 +82,23 @@ public class IssueService {
         this.issueRepository.delete(issue);
     }
 
-    public void setAssignee(Issue issue, Long assigneeid){
+    public void setAssignee(Issue issue,Long userid ,Long assigneeid){
+        User user = this.userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        if (user.getRole() != "PL") {
+            throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+        }
         issue.setAssignee(userRepository.findById(assigneeid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         this.issueRepository.save(issue);
     }
 
-    public void changeStatus(IssueRequest issueRequest, Issue issue){
+    public void changeStatus(Long userid, Issue issue){
         if(issue.getStatus()== Issue.Status.NEW){
             issue.setStatus(Issue.Status.ASSIGNED);
-            issue.setAssignee(this.userRepository.findById(issueRequest.getUserid()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
+            issue.setAssignee(this.userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         }
         else if(issue.getStatus()== Issue.Status.ASSIGNED){
             issue.setStatus(Issue.Status.FIXED);
-            issue.setFixer(this.userRepository.findById(issueRequest.getUserid()).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
+            issue.setFixer(this.userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         }
         else if(issue.getStatus()== Issue.Status.FIXED){
             issue.setStatus(Issue.Status.RESOLVED);

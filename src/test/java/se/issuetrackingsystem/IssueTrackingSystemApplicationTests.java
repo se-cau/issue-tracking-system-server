@@ -44,7 +44,7 @@ class IssueTrackingSystemApplicationTests {
 	Admin: 27
 	Dev: 28,29
 	Project: 27
-	Issue: 12 (Assigned 29)
+	Issue: 12,25 (Assigned 29)
 
 	 */
 

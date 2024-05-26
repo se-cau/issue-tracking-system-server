@@ -60,7 +60,7 @@ public class IssueController {
     @PostMapping("/assignees")
     public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.setAssignee(issue,issueRequest.getUserid());
+        this.issueService.setAssignee(issue,issueRequest.getUserid(),issueRequest.getAssigneeid());
     }
 
     @GetMapping("/{status}")
@@ -76,7 +76,7 @@ public class IssueController {
     @PatchMapping("/status")
     public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.changeStatus(issueRequest,issue);
+        this.issueService.changeStatus(issueRequest.getUserid(),issue);
     }
 
     @GetMapping("/assigned")

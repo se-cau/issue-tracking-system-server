@@ -18,4 +18,6 @@ public class IssueRequest {
 
     private Long userid;
 
+    private Long assigneeid;
+
 }
