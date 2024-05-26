@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import se.issuetrackingsystem.comment.domain.Comment;
 import se.issuetrackingsystem.comment.repository.CommentRepository;
+import se.issuetrackingsystem.common.exception.CustomException;
+import se.issuetrackingsystem.common.exception.ErrorCode;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.user.domain.User;
@@ -32,12 +34,14 @@ public class CommentService {
         return comment;
     }
 
-    public void modify(Comment comment,String content){
+    public void modify(Long commentid,String content){
+        Comment comment = this.commentRepository.findById(commentid).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         comment.setMessage(content);
         this.commentRepository.save(comment);
     }
 
-    public void delete(Comment comment){
+    public void delete(Long commentid){
+        Comment comment = this.commentRepository.findById(commentid).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         this.commentRepository.delete(comment);
     }
 

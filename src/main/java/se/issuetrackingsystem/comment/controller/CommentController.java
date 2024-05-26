@@ -22,13 +22,11 @@ public class CommentController {
 
     @DeleteMapping
     public void commentDelete(@RequestParam("commentId") Long commentid){
-        Comment comment=this.commentService.getComment(commentid);
-        this.commentService.delete(comment);
+        this.commentService.delete(commentid);
     }
 
     @PatchMapping
     public void commentModify(@RequestParam("commentId") Long commentid, @RequestBody CommentRequest commentRequest){
-        Comment comment = this.commentService.getComment(commentid);
-        this.commentService.modify(comment,commentRequest.getMessage());
+        this.commentService.modify(commentid,commentRequest.getMessage());
     }
 }

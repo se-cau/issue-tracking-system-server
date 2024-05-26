@@ -47,20 +47,17 @@ public class IssueController {
 
     @DeleteMapping
     public void issueDelete(@RequestParam("issueId") Long issueid){
-        Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.delete(issue);
+        this.issueService.delete(issueid);
     }
 
     @PatchMapping
     public void issueModify(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
-        Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.modify(issue,issueRequest.getDescription(),issueRequest.getPriority());
+        this.issueService.modify(issueid,issueRequest.getDescription(),issueRequest.getPriority());
     }
 
     @PostMapping("/assignees")
     public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
-        Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.setAssignee(issue,issueRequest.getUserid(),issueRequest.getAssigneeid());
+        this.issueService.setAssignee(issueid,issueRequest.getUserid(),issueRequest.getAssigneeid());
     }
 
     @GetMapping("/{status}")
@@ -75,8 +72,7 @@ public class IssueController {
 
     @PatchMapping("/status")
     public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
-        Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.changeStatus(issueRequest.getUserid(),issue);
+        this.issueService.changeStatus(issueRequest.getUserid(),issueid);
     }
 
     @GetMapping("/assigned")
@@ -91,7 +87,7 @@ public class IssueController {
 
     @GetMapping("/candidates")
     public ResponseEntity<User> issueCandidate(@RequestParam("issueId") Long issueid) {
-        User user = this.issueService.candidateUser(this.issueService.getIssue(issueid)).get();
+        User user = this.issueService.candidateUser(issueid).get();
         return ResponseEntity.ok(user);
     }
 

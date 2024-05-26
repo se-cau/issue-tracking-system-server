@@ -71,18 +71,21 @@ public class IssueService {
         return issues;
     }
 
-    public void modify(Issue issue, String description, Issue.Priority priority){
+    public void modify(Long issueid, String description, Issue.Priority priority){
+        Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         issue.setDescription(description);
         issue.setUpdated_at(LocalDateTime.now());
         issue.setPriority(priority);
         this.issueRepository.save(issue);
     }
 
-    public void delete(Issue issue){
+    public void delete(Long issueid){
+        Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         this.issueRepository.delete(issue);
     }
 
-    public void setAssignee(Issue issue,Long userid ,Long assigneeid){
+    public void setAssignee(Long issueid,Long userid ,Long assigneeid){
+        Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         User user = this.userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         if (user.getRole() != "PL") {
             throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
@@ -92,7 +95,8 @@ public class IssueService {
         this.issueRepository.save(issue);
     }
 
-    public void changeStatus(Long userid, Issue issue){
+    public void changeStatus(Long userid, Long issueid){
+        Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         if(issue.getStatus()== Issue.Status.NEW){
             issue.setStatus(Issue.Status.ASSIGNED);
         }
@@ -114,8 +118,9 @@ public class IssueService {
         }
         this.issueRepository.save(issue);
     }
-    public Optional<User> candidateUser(Issue issue)
+    public Optional<User> candidateUser(Long issueid)
     {
+        Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         Project project = issue.getProject();
         List<User> users = this.userRepository.findAll();
         ArrayList<User> devs = new ArrayList<>();

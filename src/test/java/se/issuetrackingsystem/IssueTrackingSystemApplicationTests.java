@@ -43,6 +43,8 @@ class IssueTrackingSystemApplicationTests {
 	/* JUnit Test용 Data
 	Admin: 27
 	Dev: 28,29
+	PL: 30
+	Tester: 31
 	Project: 27
 	Issue: 12,25 (Assigned 29)
 
@@ -65,7 +67,7 @@ class IssueTrackingSystemApplicationTests {
 
 		assertEquals(issue1,issue2);
 	}
-	@Transactional
+
 	@Test
 	public void testIssueGetList(){
 		List<Issue> issues1 = this.issueService.getList(27L);
@@ -76,7 +78,6 @@ class IssueTrackingSystemApplicationTests {
 		assertEquals(issues1,issues2);
 	}
 
-	@Transactional
 	@Test
 	public void testIssueGetListWithStatus(){
 		List<Issue> issues1 = this.issueService.getList(27L, Issue.Status.NEW);
@@ -87,9 +88,8 @@ class IssueTrackingSystemApplicationTests {
 		assertEquals(issues1,issues2);
 	}
 
-	@Transactional
 	@Test
-	public void  testIssueGetListByAssignee() {
+	public void testIssueGetListByAssignee() {
 		List<Issue> issues1 = this.issueService.getListByAssignee(29L);
 
 		User user = this.userRepository.findById(29L).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -98,6 +98,10 @@ class IssueTrackingSystemApplicationTests {
 		assertEquals(issues1,issues2);
 	}
 
+	@Test
+	public void testIssueDelete(){
+		this.issueService.delete(12L);
+	}
 
 
 }
