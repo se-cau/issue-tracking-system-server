@@ -14,6 +14,7 @@ import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.user.domain.Dev;
+import se.issuetrackingsystem.user.domain.PL;
 import se.issuetrackingsystem.user.domain.ProjectContributor;
 import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
@@ -71,28 +72,32 @@ public class IssueService {
         return issues;
     }
 
-    public void modify(Long issueid, String description, Issue.Priority priority){
+    public Issue modify(Long issueid,String title ,String description, Issue.Priority priority){
         Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        issue.setTitle(title);
         issue.setDescription(description);
         issue.setUpdated_at(LocalDateTime.now());
         issue.setPriority(priority);
         this.issueRepository.save(issue);
+        return issue;
     }
 
-    public void delete(Long issueid){
+    public Issue delete(Long issueid){
         Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         this.issueRepository.delete(issue);
+        return issue;
     }
 
-    public void setAssignee(Long issueid,Long userid ,Long assigneeid){
+    public Issue setAssignee(Long issueid,Long userid ,Long assigneeid){
         Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         User user = this.userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-        if (user.getRole() != "PL") {
+        if (!"PL".equals(user.getRole())) {
             throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
         }
         issue.setAssignee(userRepository.findById(assigneeid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         issue.setStatus(Issue.Status.ASSIGNED);
         this.issueRepository.save(issue);
+        return issue;
     }
 
     public void changeStatus(Long userid, Long issueid){

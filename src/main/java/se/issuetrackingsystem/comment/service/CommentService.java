@@ -34,10 +34,11 @@ public class CommentService {
         return comment;
     }
 
-    public void modify(Long commentid,String content){
+    public Comment modify(Long commentid,String content){
         Comment comment = this.commentRepository.findById(commentid).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         comment.setMessage(content);
         this.commentRepository.save(comment);
+        return comment;
     }
 
     public void delete(Long commentid){
@@ -49,9 +50,5 @@ public class CommentService {
         Issue issue = this.issueRepository.findById(issueid).get();
         List<Comment> comments = this.commentRepository.findAllByIssue(issue);
         return comments;
-    }
-
-    public Comment getComment(Long commentid){
-        return this.commentRepository.findById(commentid).get();
     }
 }

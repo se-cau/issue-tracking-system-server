@@ -52,7 +52,7 @@ public class IssueController {
 
     @PatchMapping
     public void issueModify(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
-        this.issueService.modify(issueid,issueRequest.getDescription(),issueRequest.getPriority());
+        this.issueService.modify(issueid,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getPriority());
     }
 
     @PostMapping("/assignees")
