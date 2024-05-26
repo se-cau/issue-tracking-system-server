@@ -47,7 +47,7 @@ public class CommentService {
     }
 
     public List<Comment> getList(Long issueid){
-        Issue issue = this.issueRepository.findById(issueid).get();
+        Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         List<Comment> comments = this.commentRepository.findAllByIssue(issue);
         return comments;
     }
