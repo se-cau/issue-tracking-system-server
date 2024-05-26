@@ -88,13 +88,13 @@ public class IssueService {
             throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
         }
         issue.setAssignee(userRepository.findById(assigneeid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
+        issue.setStatus(Issue.Status.ASSIGNED);
         this.issueRepository.save(issue);
     }
 
     public void changeStatus(Long userid, Issue issue){
         if(issue.getStatus()== Issue.Status.NEW){
             issue.setStatus(Issue.Status.ASSIGNED);
-            issue.setAssignee(this.userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         }
         else if(issue.getStatus()== Issue.Status.ASSIGNED){
             issue.setStatus(Issue.Status.FIXED);
