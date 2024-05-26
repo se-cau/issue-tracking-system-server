@@ -18,12 +18,17 @@ public class CommentResponse {
 
     private Long authorid;
 
-    public CommentResponse(Comment comment){
-        this.id= comment.getId();
-        this.message=comment.getMessage();
-        if(comment.getAuthor()!=null){
-            this.authorid= comment.getAuthor().getId();
+    private String username;
+
+    private String role;
+    public CommentResponse(Comment comment) {
+        this.id = comment.getId();
+        this.message = comment.getMessage();
+        if (comment.getAuthor() != null) {
+            this.authorid = comment.getAuthor().getId();
+            this.username = comment.getAuthor().getUsername();
+            this.role = comment.getAuthor().getRole();
         }
-        this.created_at=comment.getCreated_at();
+        this.created_at = comment.getCreated_at();
     }
 }
