@@ -31,12 +31,13 @@ public class IssueService {
     private final ProjectRepository projectRepository;
     private final ProjectContributorRepository projectContributorRepository;
 
-    public Issue create(Long projectid, String title, String description, Long reporterid){
+    public Issue create(Long projectid, String title, String description, Long reporterid, Issue.Priority priority){
         Issue issue = new Issue();
         Project project = this.projectRepository.findById(projectid).orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND));
         issue.setProject(project);
         issue.setTitle(title);
         issue.setDescription(description);
+        issue.setPriority(priority);
         issue.setReporter(userRepository.findById(reporterid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         issue.setCreated_at(LocalDateTime.now());
         this.issueRepository.save(issue);
@@ -68,9 +69,10 @@ public class IssueService {
         return issues;
     }
 
-    public void modify(Issue issue,String description){
+    public void modify(Issue issue, String description, Issue.Priority priority){
         issue.setDescription(description);
         issue.setUpdated_at(LocalDateTime.now());
+        issue.setPriority(priority);
         this.issueRepository.save(issue);
     }
 

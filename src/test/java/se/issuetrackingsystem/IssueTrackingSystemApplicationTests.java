@@ -50,7 +50,7 @@ class IssueTrackingSystemApplicationTests {
 
 	@Test
 	public void testIssueCreate(){
-		Issue issue1 = this.issueService.create(27L,"Hello JUnit","Hello Spring", 28L);
+		Issue issue1 = this.issueService.create(27L,"Hello JUnit","Hello Spring", 28L, Issue.Priority.MAJOR);
 
 		Issue issue2 = this.issueRepository.findById(issue1.getId()).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
 

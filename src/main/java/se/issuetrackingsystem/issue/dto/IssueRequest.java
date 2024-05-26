@@ -12,7 +12,7 @@ public class IssueRequest {
 
     private String description;
 
-    private Long assigneeid;
+    private Issue.Priority priority;
 
     private Issue.Status status;
 

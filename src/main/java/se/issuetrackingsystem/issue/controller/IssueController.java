@@ -25,7 +25,7 @@ public class IssueController {
 
     @PostMapping
     public void issueCreate(@RequestBody IssueRequest issueRequest, @RequestParam("projectId") Long projectid){
-        this.issueService.create(projectid,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid());
+        this.issueService.create(projectid,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid(),issueRequest.getPriority());
     }
 
     @GetMapping
@@ -54,13 +54,13 @@ public class IssueController {
     @PatchMapping
     public void issueModify(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.modify(issue,issueRequest.getDescription());
+        this.issueService.modify(issue,issueRequest.getDescription(),issueRequest.getPriority());
     }
 
     @PostMapping("/assignees")
     public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
         Issue issue = this.issueService.getIssue(issueid);
-        this.issueService.setAssignee(issue,issueRequest.getAssigneeid());
+        this.issueService.setAssignee(issue,issueRequest.getUserid());
     }
 
     @GetMapping("/{status}")
