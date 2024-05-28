@@ -10,7 +10,6 @@ import se.issuetrackingsystem.common.exception.ErrorCode;
 import se.issuetrackingsystem.user.domain.*;
 import se.issuetrackingsystem.user.dto.LoginRequest;
 import se.issuetrackingsystem.user.dto.RegisterRequest;
-import se.issuetrackingsystem.user.dto.LoginResponse;
 import se.issuetrackingsystem.user.dto.UserResponse;
 import se.issuetrackingsystem.user.repository.UserRepository;
 import se.issuetrackingsystem.user.service.UserService;
@@ -27,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void register(RegisterRequest request) {
+    public UserResponse register(RegisterRequest request) {
 
         String username = request.getUsername();
         String password = request.getPassword();
@@ -39,11 +38,13 @@ public class UserServiceImpl implements UserService {
 
         User user = createUser(role, username, passwordEncoder.encode(password));
         userRepository.save(user);
+
+        return new UserResponse(user);
     }
 
     @Override
     @Transactional
-    public LoginResponse login(LoginRequest request) {
+    public UserResponse login(LoginRequest request) {
 
         String username = request.getUsername();
 
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(ErrorCode.PASSWORD_FORBIDDEN);
         }
 
-        return new LoginResponse(user);
+        return new UserResponse(user);
     }
 
     @Override
