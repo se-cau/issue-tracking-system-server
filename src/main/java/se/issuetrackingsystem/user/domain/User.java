@@ -28,13 +28,13 @@ public abstract class User {
     @OneToMany(mappedBy = "contributor")
     private List<ProjectContributor> projectContributors;
 
-    abstract boolean canManageProject(); // Admin
-    abstract boolean canManageComment(); // PL, Dev, Tester
-    abstract boolean canManageIssue(); // Tester
-    abstract boolean canSetAssignee(); // PL
-    abstract boolean canChangeIssueStateAssignedToFixed(); // Dev
-    abstract boolean canChangeIssueStateFixedToResolved(); // Tester
-    abstract boolean canChangeIssueStateResolvedToClosed(); // PL
+    public boolean canManageProject(){ return false; } // Admin
+    public boolean canManageComment(){ return false; } // PL, Dev, Tester
+    public boolean canManageIssue(){ return false; } // Tester
+    public boolean canSetAssignee(){ return false; } // PL
+    public boolean canChangeIssueStateAssignedToFixed(){ return false; } // Dev
+    public boolean canChangeIssueStateFixedToResolved(){ return false; } // Tester
+    public boolean canChangeIssueStateResolvedToClosed(){ return false; } // PL
 
     public User(String username, String password) {
         this.username = username;

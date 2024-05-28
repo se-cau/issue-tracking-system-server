@@ -12,6 +12,7 @@ import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.user.domain.Dev;
 import se.issuetrackingsystem.user.domain.ProjectContributor;
+import se.issuetrackingsystem.user.domain.Tester;
 import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
@@ -32,100 +33,128 @@ public class IssueService {
     public Issue create(Long projectId, String title, String description, Long reporterId, Issue.Priority priority){
         Issue issue = new Issue();
         Project project = projectRepository.findById(projectId).orElseThrow(()->new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        User user = userRepository.findById(reporterId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        if(!user.canManageIssue()){
+            throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+        }
         issue.setProject(project);
         issue.setTitle(title);
         issue.setDescription(description);
         if (priority!=null) {
             issue.setPriority(priority);
         }
-        issue.setReporter(userRepository.findById(reporterId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
+        issue.setReporter(user);
         issue.setCreatedAt(LocalDateTime.now());
-        this.issueRepository.save(issue);
+        issueRepository.save(issue);
         return issue;
     }
 
     public Issue getIssue(Long issueId){
-        return this.issueRepository.findById(issueId).orElseThrow(() -> new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        return issueRepository.findById(issueId).orElseThrow(() -> new CustomException(ErrorCode.ISSUE_NOT_FOUND));
     }
 
     public List<Issue> getList(Long projectId){
         List<Issue> issues;
-        Project project = this.projectRepository.findById(projectId).orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
-        issues = this.issueRepository.findAllByProject(project);
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        issues = issueRepository.findAllByProject(project);
         return issues;
     }
 
     public List<Issue> getListByAssignee(Long userId){
         List<Issue> issues;
-        User user = this.userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-        issues = this.issueRepository.findAllByAssignee(user);
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        issues = issueRepository.findAllByAssignee(user);
         return issues;
     }
 
     public List<Issue> getList(Long projectId, Issue.Status status){
         List<Issue> issues;
-        Project project = this.projectRepository.findById(projectId).orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
-        issues = this.issueRepository.findAllByProjectAndStatus(project,status);
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+        issues = issueRepository.findAllByProjectAndStatus(project,status);
         return issues;
     }
 
-    public Issue modify(Long issueId, String title ,String description, Issue.Priority priority){
-        Issue issue = this.issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+    public Issue modify(Long issueId, String title ,String description, Issue.Priority priority,Long userid){
+        Issue issue = issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        User user = userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        if(!user.canManageIssue()){
+            throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+        }
         issue.setTitle(title);
         issue.setDescription(description);
         issue.setUpdatedAt(LocalDateTime.now());
         issue.setPriority(priority);
-        this.issueRepository.save(issue);
+        issueRepository.save(issue);
         return issue;
     }
 
     public Issue delete(Long issueId){
-        Issue issue = this.issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
-        this.issueRepository.delete(issue);
+        Issue issue = issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        issueRepository.delete(issue);
         return issue;
     }
 
     public Issue setAssignee(Long issueId, Long userId, Long assigneeId){
-        Issue issue = this.issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
-        User user = this.userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-        if (!"PL".equals(user.getRole())) {
+        Issue issue = issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        if (!user.canSetAssignee()||!assignee.canChangeIssueStateAssignedToFixed()) {
             throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
         }
-        issue.setAssignee(userRepository.findById(assigneeId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
+        issue.setAssignee(assignee);
         issue.setStatus(Issue.Status.ASSIGNED);
-        this.issueRepository.save(issue);
+        issueRepository.save(issue);
         return issue;
     }
 
     public Issue changeStatus(Long userId, Long issueId){
-        Issue issue = this.issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
-        if(issue.getStatus()== Issue.Status.NEW){
-            issue.setStatus(Issue.Status.ASSIGNED);
+        Issue issue = issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        switch (issue.getStatus()){
+            case NEW :
+                throw new CustomException(ErrorCode.METHOD_NOT_ALLOWED);
+            case ASSIGNED:
+                if(!user.canChangeIssueStateAssignedToFixed()){
+                    throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+                }
+                else {
+                    issue.setStatus(Issue.Status.FIXED);
+                    issue.setFixer(user);
+                }
+                break;
+            case FIXED:
+                if(!user.canChangeIssueStateFixedToResolved()){
+                    throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+                }
+                else {
+                    issue.setStatus(Issue.Status.RESOLVED);
+                }
+                break;
+            case RESOLVED,REOPENED:
+                if (!user.canChangeIssueStateResolvedToClosed()) {
+                    throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+                }
+                else {
+                    issue.setStatus(Issue.Status.CLOSE);
+                }
+                break;
+            case CLOSE:
+                if(!user.canChangeIssueStateResolvedToClosed()){
+                    throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+                }
+                else {
+                    issue.setStatus(Issue.Status.REOPENED);
+                }
+                break;
         }
-        else if(issue.getStatus()== Issue.Status.ASSIGNED){
-            issue.setStatus(Issue.Status.FIXED);
-            issue.setFixer(this.userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
-        }
-        else if(issue.getStatus()== Issue.Status.FIXED){
-            issue.setStatus(Issue.Status.RESOLVED);
-        }
-        else if(issue.getStatus()== Issue.Status.RESOLVED){
-            issue.setStatus(Issue.Status.CLOSE);
-        }
-        else if(issue.getStatus()== Issue.Status.CLOSE){
-            issue.setStatus(Issue.Status.REOPENED);
-        }
-        else if(issue.getStatus()== Issue.Status.REOPENED){
-            issue.setStatus(Issue.Status.CLOSE);
-        }
-        this.issueRepository.save(issue);
+        issueRepository.save(issue);
         return issue;
     }
     public Optional<User> candidateUser(Long issueId)
     {
-        Issue issue = this.issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        Issue issue = issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         Project project = issue.getProject();
-        List<User> users = this.userRepository.findAll();
+        List<User> users = userRepository.findAll();
         ArrayList<User> devs = new ArrayList<>();
         ArrayList<User> projectDevs = new ArrayList<>();
         //모든 developer 추가
@@ -139,7 +168,7 @@ public class IssueService {
         List<Project> projs;
         for(User u : devs){
             projs = new ArrayList<>();
-            proconts = this.projectContributorRepository.findAllByContributor(u);
+            proconts = projectContributorRepository.findAllByContributor(u);
             for(ProjectContributor pc : proconts){
                 projs.add(pc.getProject());
             }
@@ -157,7 +186,7 @@ public class IssueService {
         Integer maxP = 0;
         Optional<User> result = Optional.empty();
         for(User d : devs){
-            devInfo tempInfo = new devInfo(d,this.issueRepository.findAllByFixer(d));
+            devInfo tempInfo = new devInfo(d,issueRepository.findAllByFixer(d));
             for(String s : titleWords){
                 if(tempInfo.getIssuesTitleWords().containsKey(s)){
                     tempInfo.addPoints(tempInfo.getIssuesTitleWords().get(s)*10);
@@ -173,7 +202,9 @@ public class IssueService {
                 result=Optional.ofNullable(tempInfo.getUser());
             }
         }
-
+        if(result.isEmpty()){
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
         return result;
     }
 
@@ -186,8 +217,8 @@ public class IssueService {
         private Integer points;
 
         devInfo(User dev, List<Issue> issues) {
-            this.points = 0;
-            this.user = dev;
+            points = 0;
+            user = dev;
 
             fixedIssues = new ArrayList<>(issues);
             ArrayList<String> sTemp;
@@ -214,7 +245,7 @@ public class IssueService {
         }
 
         public void addPoints(Integer value) {
-            this.points += value;
+            points += value;
         }
     }
     public IssueStatisticsResponse getIssueStatistics(Long projectId) {
