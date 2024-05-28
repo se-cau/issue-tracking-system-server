@@ -12,5 +12,5 @@ public class CommentRequest {
     private String message;
 
     @NotBlank
-    private Long authorid;
+    private Long authorId;
 }

@@ -1,4 +1,4 @@
-package se.issuetrackingsystem.user.service.impl;
+package se.issuetrackingsystem.user.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,10 +24,10 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-class UserServiceImplTest {
+class UserServiceTest {
 
     @Autowired
-    UserServiceImpl userService;
+    UserService userService;
 
     @Autowired
     UserRepository userRepository;

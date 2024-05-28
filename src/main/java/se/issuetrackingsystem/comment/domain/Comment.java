@@ -13,13 +13,14 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String message;
 
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @ManyToOne
     private User author;

@@ -8,8 +8,6 @@ import se.issuetrackingsystem.comment.dto.CommentRequest;
 import se.issuetrackingsystem.comment.dto.CommentResponse;
 import se.issuetrackingsystem.comment.service.CommentService;
 import se.issuetrackingsystem.comment.domain.Comment;
-import se.issuetrackingsystem.issue.domain.Issue;
-import se.issuetrackingsystem.issue.dto.IssueResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,23 +21,29 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public void commentCreate(@RequestParam("issueId") Long issueid,@RequestBody CommentRequest commentRequest){
-        this.commentService.create(issueid,commentRequest.getMessage(),commentRequest.getAuthorid());
+    public ResponseEntity<List<CommentResponse>> commentCreate(@RequestParam("issueId") Long issueId,@RequestBody CommentRequest commentRequest){
+        this.commentService.create(issueId,commentRequest.getMessage(),commentRequest.getAuthorId());
+        List<Comment> comments = this.commentService.getList(issueId);
+        List<CommentResponse> responses = new ArrayList<>();
+        for(Comment i : comments){
+            responses.add(new CommentResponse(i));
+        }
+        return ResponseEntity.ok(responses);
     }
 
     @DeleteMapping
-    public void commentDelete(@RequestParam("commentId") Long commentid){
-        this.commentService.delete(commentid);
+    public ResponseEntity<Comment> commentDelete(@RequestParam("commentId") Long commentId){
+        return ResponseEntity.ok(this.commentService.delete(commentId));
     }
 
     @PatchMapping
-    public void commentModify(@RequestParam("commentId") Long commentid, @RequestBody CommentRequest commentRequest){
-        this.commentService.modify(commentid,commentRequest.getMessage());
+    public ResponseEntity<Comment> commentModify(@RequestParam("commentId") Long commentId, @RequestBody CommentRequest commentRequest){
+        return ResponseEntity.ok(this.commentService.modify(commentId, commentRequest.getMessage()));
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentResponse>> commentListGet(@RequestParam("issueId")Long issueid){
-        List<Comment> comments = this.commentService.getList(issueid);
+    public ResponseEntity<List<CommentResponse>> commentListGet(@RequestParam("issueId")Long issueId){
+        List<Comment> comments = this.commentService.getList(issueId);
         List<CommentResponse> responses = new ArrayList<>();
         for(Comment i : comments){
             responses.add(new CommentResponse(i));

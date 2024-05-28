@@ -4,10 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity(name = "users")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "role")
 @Getter
 @NoArgsConstructor
 public abstract class User {
@@ -24,7 +23,10 @@ public abstract class User {
     private String password;
 
     @Column(nullable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "contributor")
+    private List<ProjectContributor> projectContributors;
 
     abstract boolean canManageProject(); // Admin
     abstract boolean canManageComment(); // PL, Dev, Tester
@@ -37,7 +39,7 @@ public abstract class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.createdDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public String getRole() {

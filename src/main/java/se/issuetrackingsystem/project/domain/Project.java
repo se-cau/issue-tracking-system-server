@@ -31,12 +31,12 @@ public class Project {
     private List<ProjectContributor> projectContributors = new ArrayList<>();
 
     @Column(nullable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     public Project(String title, Admin admin) {
         this.title = title;
         this.admin = admin;
-        this.createdDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public void addContributor(ProjectContributor projectContributor) {
