@@ -35,7 +35,7 @@ public class CommentControllerTests {
     void testCommentCreate() throws Exception {
         CommentRequest request = new CommentRequest();
         request.setMessage("Test Message");
-        request.setAuthorid(1L);
+        request.setAuthorId(1L);
 
         when(commentService.create(anyLong(),anyString(),anyLong())).thenReturn(new Comment());
 
