@@ -191,9 +191,10 @@ public class IssueServiceTests {
         issue.setPriority(Issue.Priority.MINOR);
 
         when(issueRepository.findById(issue.getId())).thenReturn(Optional.of(issue));
+        when(userRepository.findById(any())).thenReturn(Optional.of(new Tester()));
 
         //when
-        Issue result = issueService.modify(issue.getId(), "Hello", "Banana", Issue.Priority.MAJOR);
+        Issue result = issueService.modify(issue.getId(), "Hello", "Banana", Issue.Priority.MAJOR,1L);
 
         //then
         assertEquals(result.getTitle(), "Hello");

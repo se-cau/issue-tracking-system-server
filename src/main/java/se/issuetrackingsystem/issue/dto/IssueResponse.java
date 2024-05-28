@@ -41,10 +41,10 @@ public class IssueResponse {
             this.setReporter(issue.getReporter().getUsername());
         }
         if(issue.getAssignee()!=null) {
-            this.setReporter(issue.getAssignee().getUsername());
+            this.setAssignee(issue.getAssignee().getUsername());
         }
         if(issue.getFixer()!=null) {
-            this.setReporter(issue.getFixer().getUsername());
+            this.setFixer(issue.getFixer().getUsername());
         }
         this.setPriority(issue.getPriority());
         this.setCreatedAt(issue.getCreatedAt());
