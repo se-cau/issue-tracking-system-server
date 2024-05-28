@@ -97,7 +97,7 @@ public class IssueService {
         return issue;
     }
 
-    public void changeStatus(Long userId, Long issueId){
+    public Issue changeStatus(Long userId, Long issueId){
         Issue issue = this.issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         if(issue.getStatus()== Issue.Status.NEW){
             issue.setStatus(Issue.Status.ASSIGNED);
@@ -119,6 +119,7 @@ public class IssueService {
             issue.setStatus(Issue.Status.CLOSE);
         }
         this.issueRepository.save(issue);
+        return issue;
     }
     public Optional<User> candidateUser(Long issueId)
     {

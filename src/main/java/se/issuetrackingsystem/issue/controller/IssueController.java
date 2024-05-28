@@ -23,8 +23,14 @@ public class IssueController {
     private final IssueService issueService;
 
     @PostMapping
-    public void issueCreate(@RequestBody IssueRequest issueRequest, @RequestParam("projectId") Long projectId){
+    public ResponseEntity<List<IssueResponse>> issueCreate(@RequestBody IssueRequest issueRequest, @RequestParam("projectId") Long projectId){
         this.issueService.create(projectId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid(),issueRequest.getPriority());
+        List<Issue> issues = this.issueService.getList(projectId);
+        List<IssueResponse> responses = new ArrayList<>();
+        for(Issue i : issues){
+            responses.add(new IssueResponse(i));
+        }
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping
@@ -45,18 +51,20 @@ public class IssueController {
     }
 
     @DeleteMapping
-    public void issueDelete(@RequestParam("issueId") Long issueId){
-        this.issueService.delete(issueId);
+    public ResponseEntity<IssueResponse> issueDelete(@RequestParam("issueId") Long issueId){
+        return ResponseEntity.ok(new IssueResponse(issueService.delete(issueId)));
     }
 
     @PatchMapping
-    public void issueModify(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        this.issueService.modify(issueId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getPriority());
+    public ResponseEntity<Issue> issueModify(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+        Issue issue = this.issueService.modify(issueId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getPriority());
+        return ResponseEntity.ok(issue);
     }
 
     @PostMapping("/assignees")
-    public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        this.issueService.setAssignee(issueId,issueRequest.getUserid(),issueRequest.getAssigneeId());
+    public ResponseEntity<Issue> issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+        Issue issue = this.issueService.setAssignee(issueId,issueRequest.getUserid(),issueRequest.getAssigneeId());
+        return ResponseEntity.ok(issue);
     }
 
     @GetMapping("/{status}")
@@ -70,8 +78,9 @@ public class IssueController {
     }
 
     @PatchMapping("/status")
-    public void issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        this.issueService.changeStatus(issueRequest.getUserid(),issueId);
+    public ResponseEntity<Issue> issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+        Issue issue = this.issueService.changeStatus(issueRequest.getUserid(),issueId);
+        return ResponseEntity.ok(issue);
     }
 
     @GetMapping("/assigned")

@@ -41,9 +41,10 @@ public class CommentService {
         return comment;
     }
 
-    public void delete(Long commentId){
+    public Comment delete(Long commentId){
         Comment comment = this.commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         this.commentRepository.delete(comment);
+        return comment;
     }
 
     public List<Comment> getList(Long issueId){
