@@ -8,7 +8,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import se.issuetrackingsystem.common.exception.CustomException;
 import se.issuetrackingsystem.common.exception.ErrorCode;
-import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.dto.LoginRequest;
 import se.issuetrackingsystem.user.dto.RegisterRequest;
 import se.issuetrackingsystem.user.dto.UserResponse;
@@ -33,15 +32,14 @@ class UserServiceImplTest {
     void register() {
         RegisterRequest request = new RegisterRequest("TestDev", "0000", "Dev");
 
-        userService.register(request);
+        UserResponse response = userService.register(request);
 
-        User user = userRepository.findByUsername("TestDev").orElse(null);
-        assertNotNull(user);
-        assertEquals("TestDev", user.getUsername());
+        assertNotNull(response);
+        assertEquals("TestDev", response.getUsername());
     }
 
     @Test
-    void register_wrongRole_throwsException() {
+    void registerWithWrongRole() {
         RegisterRequest request = new RegisterRequest("TestDev", "0000", "WrongRole");
 
         CustomException exception = assertThrows(CustomException.class, () -> userService.register(request));
@@ -49,7 +47,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void register_duplicateUsername_throwsException() {
+    void registerWithDuplicateUsername() {
         RegisterRequest request1 = new RegisterRequest("TestDev", "0000", "Dev");
         RegisterRequest request2 = new RegisterRequest("TestDev", "0000", "Dev");
 
@@ -65,14 +63,14 @@ class UserServiceImplTest {
         userService.register(registerRequest);
 
         LoginRequest loginRequest = new LoginRequest("TestDev", "0000");
-        var response = userService.login(loginRequest);
+        UserResponse response = userService.login(loginRequest);
 
         assertNotNull(response);
         assertEquals("TestDev", response.getUsername());
     }
 
     @Test
-    void login_wrongPassword_throwsException() {
+    void loginWithWrongPassword() {
         RegisterRequest registerRequest = new RegisterRequest("TestDev", "0000", "Dev");
         userService.register(registerRequest);
 
