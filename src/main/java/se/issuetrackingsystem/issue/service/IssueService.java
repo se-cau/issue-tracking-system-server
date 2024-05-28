@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class IssueService {
+
     private final IssueRepository issueRepository;
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
