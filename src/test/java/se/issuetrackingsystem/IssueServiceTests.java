@@ -1,6 +1,4 @@
 package se.issuetrackingsystem;
-
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,7 +77,22 @@ public class IssueServiceTests {
         //when then
         assertThrows(CustomException.class,
         ()-> issueService.create(project.getId(), "Issue1", "issue", user.getId(), Issue.Priority.MINOR));
+    }
 
+    @Test
+    @DisplayName("이슈 생성 실패-리포터_없음")
+    void issueCreateNoReporter() {
+        //given
+        Project project = mock(Project.class);
+        User user = mock(User.class);
+
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
+        when(issueRepository.save(any(Issue.class))).thenAnswer(i -> i.getArgument(0));
+
+        //when then
+        assertThrows(CustomException.class,
+                ()-> issueService.create(project.getId(), "Issue1", "issue", user.getId(), Issue.Priority.MINOR));
     }
 
     @Test
