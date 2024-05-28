@@ -1,20 +1,16 @@
 package se.issuetrackingsystem.issue.service;
 
-import jakarta.validation.constraints.Null;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 import se.issuetrackingsystem.common.exception.CustomException;
 import se.issuetrackingsystem.common.exception.ErrorCode;
 import se.issuetrackingsystem.issue.domain.Issue;
-import se.issuetrackingsystem.issue.dto.IssueRequest;
 import se.issuetrackingsystem.issue.dto.IssueStatisticsResponse;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.user.domain.Dev;
-import se.issuetrackingsystem.user.domain.PL;
 import se.issuetrackingsystem.user.domain.ProjectContributor;
 import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
@@ -42,7 +38,7 @@ public class IssueService {
             issue.setPriority(priority);
         }
         issue.setReporter(userRepository.findById(reporterid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
-        issue.setCreated_at(LocalDateTime.now());
+        issue.setCreatedAt(LocalDateTime.now());
         this.issueRepository.save(issue);
         return issue;
     }
@@ -76,7 +72,7 @@ public class IssueService {
         Issue issue = this.issueRepository.findById(issueid).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         issue.setTitle(title);
         issue.setDescription(description);
-        issue.setUpdated_at(LocalDateTime.now());
+        issue.setUpdatedAt(LocalDateTime.now());
         issue.setPriority(priority);
         this.issueRepository.save(issue);
         return issue;

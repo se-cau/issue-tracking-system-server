@@ -24,7 +24,7 @@ public abstract class User {
     private String password;
 
     @Column(nullable = false)
-    private LocalDateTime createdDate;
+    private LocalDateTime createdAt;
 
     abstract boolean canManageProject(); // Admin
     abstract boolean canManageComment(); // PL, Dev, Tester
@@ -37,7 +37,7 @@ public abstract class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.createdDate = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     public String getRole() {

@@ -8,8 +8,6 @@ import se.issuetrackingsystem.comment.dto.CommentRequest;
 import se.issuetrackingsystem.comment.dto.CommentResponse;
 import se.issuetrackingsystem.comment.service.CommentService;
 import se.issuetrackingsystem.comment.domain.Comment;
-import se.issuetrackingsystem.issue.domain.Issue;
-import se.issuetrackingsystem.issue.dto.IssueResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,7 @@ public class CommentController {
 
     @PostMapping
     public void commentCreate(@RequestParam("issueId") Long issueid,@RequestBody CommentRequest commentRequest){
-        this.commentService.create(issueid,commentRequest.getMessage(),commentRequest.getAuthorid());
+        this.commentService.create(issueid,commentRequest.getMessage(),commentRequest.getAuthorId());
     }
 
     @DeleteMapping

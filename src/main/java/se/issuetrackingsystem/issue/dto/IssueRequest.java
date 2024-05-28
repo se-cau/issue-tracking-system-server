@@ -1,6 +1,5 @@
 package se.issuetrackingsystem.issue.dto;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import se.issuetrackingsystem.issue.domain.Issue;
@@ -18,6 +17,6 @@ public class IssueRequest {
 
     private Long userid;
 
-    private Long assigneeid;
+    private Long assigneeId;
 
 }

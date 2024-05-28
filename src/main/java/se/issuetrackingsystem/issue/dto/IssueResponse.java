@@ -11,25 +11,6 @@ import java.time.LocalDateTime;
 @Setter
 public class IssueResponse {
 
-    public IssueResponse(Issue issue){
-        this.setTitle(issue.getTitle());
-        this.setId(issue.getId());
-        this.setDescription(issue.getDescription());
-        if(issue.getReporter()!=null) {
-            this.setReporter(issue.getReporter().getUsername());
-        }
-        if(issue.getAssignee()!=null) {
-            this.setReporter(issue.getAssignee().getUsername());
-        }
-        if(issue.getFixer()!=null) {
-            this.setReporter(issue.getFixer().getUsername());
-        }
-        this.setPriority(issue.getPriority());
-        this.setCreated_at(issue.getCreated_at());
-        this.setUpdated_at(issue.getUpdated_at());
-        this.setStatus(issue.getStatus());
-    }
-
     @NotEmpty
     private Long id;
 
@@ -49,6 +30,25 @@ public class IssueResponse {
 
     private Issue.Priority priority;
 
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public IssueResponse(Issue issue){
+        this.setTitle(issue.getTitle());
+        this.setId(issue.getId());
+        this.setDescription(issue.getDescription());
+        if(issue.getReporter()!=null) {
+            this.setReporter(issue.getReporter().getUsername());
+        }
+        if(issue.getAssignee()!=null) {
+            this.setReporter(issue.getAssignee().getUsername());
+        }
+        if(issue.getFixer()!=null) {
+            this.setReporter(issue.getFixer().getUsername());
+        }
+        this.setPriority(issue.getPriority());
+        this.setCreatedAt(issue.getCreatedAt());
+        this.setUpdatedAt(issue.getUpdatedAt());
+        this.setStatus(issue.getStatus());
+    }
 }

@@ -29,7 +29,7 @@ public class CommentService {
         User user = this.userRepository.findById(authorid).get();
         comment.setAuthor(user);
         comment.setMessage(content);
-        comment.setCreated_at(LocalDateTime.now());
+        comment.setCreatedAt(LocalDateTime.now());
         this.commentRepository.save(comment);
         return comment;
     }

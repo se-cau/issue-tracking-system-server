@@ -14,7 +14,6 @@ import se.issuetrackingsystem.user.domain.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequestMapping("api/v1/issues")
@@ -57,7 +56,7 @@ public class IssueController {
 
     @PostMapping("/assignees")
     public void issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueid){
-        this.issueService.setAssignee(issueid,issueRequest.getUserid(),issueRequest.getAssigneeid());
+        this.issueService.setAssignee(issueid,issueRequest.getUserid(),issueRequest.getAssigneeId());
     }
 
     @GetMapping("/{status}")

@@ -43,9 +43,9 @@ public class Issue {
     @Enumerated(EnumType.STRING)
     private Priority priority = Priority.MAJOR;
 
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "issue", cascade = CascadeType.REMOVE)
     private List<Comment> commentList;
