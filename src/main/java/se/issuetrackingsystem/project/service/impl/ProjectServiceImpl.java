@@ -26,7 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public void createProject(ProjectRequest request) {
+    public ProjectResponse createProject(ProjectRequest request) {
 
         String title = request.getTitle();
         Long adminId = request.getAdminId();
@@ -39,6 +39,8 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.save(project);
 
         addContributors(contributorIds, project);
+
+        return new ProjectResponse(project);
     }
 
     @Override
