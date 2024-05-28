@@ -21,9 +21,9 @@ public class ProjectContributor {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "contributor_id")
     @MapsId("contributorId")
-    private Contributor contributor;
+    private User contributor;
 
-    public ProjectContributor(ProjectContributorPK projectContributorPK, Project project, Contributor contributor) {
+    public ProjectContributor(ProjectContributorPK projectContributorPK, Project project, User contributor) {
         this.projectContributorPK = projectContributorPK;
         this.project = project;
         this.contributor = contributor;

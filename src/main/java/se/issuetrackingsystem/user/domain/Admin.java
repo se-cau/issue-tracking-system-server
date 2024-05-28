@@ -18,37 +18,37 @@ public class Admin extends User {
     private List<Project> projects = new ArrayList<>();
 
     @Override
-    boolean canManageProject() {
+    public boolean canManageProject() {
         return true;
     }
 
     @Override
-    boolean canManageComment() {
+    public boolean canManageComment() {
         return false;
     }
 
     @Override
-    boolean canManageIssue() {
+    public boolean canManageIssue() {
         return false;
     }
 
     @Override
-    boolean canSetAssignee() {
+    public boolean canSetAssignee() {
         return false;
     }
 
     @Override
-    boolean canChangeIssueStateAssignedToFixed() {
+    public boolean canChangeIssueStateAssignedToFixed() {
         return false;
     }
 
     @Override
-    boolean canChangeIssueStateFixedToResolved() {
+    public boolean canChangeIssueStateFixedToResolved() {
         return false;
     }
 
     @Override
-    boolean canChangeIssueStateResolvedToClosed() {
+    public boolean canChangeIssueStateResolvedToClosed() {
         return false;
     }
 

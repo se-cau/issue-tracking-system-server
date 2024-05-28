@@ -7,29 +7,40 @@ import lombok.NoArgsConstructor;
 @Entity
 @DiscriminatorValue("Dev")
 @NoArgsConstructor
-public class Dev extends Contributor {
+public class Dev extends User {
+
     @Override
-    boolean canManageIssue() {
+    public boolean canManageProject() {
         return false;
     }
 
     @Override
-    boolean canSetAssignee() {
-        return false;
-    }
-
-    @Override
-    boolean canChangeIssueStateAssignedToFixed() {
+    public boolean canManageComment() {
         return true;
     }
 
     @Override
-    boolean canChangeIssueStateFixedToResolved() {
+    public boolean canManageIssue() {
         return false;
     }
 
     @Override
-    boolean canChangeIssueStateResolvedToClosed() {
+    public boolean canSetAssignee() {
+        return false;
+    }
+
+    @Override
+    public boolean canChangeIssueStateAssignedToFixed() {
+        return true;
+    }
+
+    @Override
+    public boolean canChangeIssueStateFixedToResolved() {
+        return false;
+    }
+
+    @Override
+    public boolean canChangeIssueStateResolvedToClosed() {
         return false;
     }
 

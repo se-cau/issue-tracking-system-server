@@ -76,7 +76,7 @@ public class ProjectService {
         List<ProjectContributor> projectContributors = contributorIds
                 .stream()
                 .map(id -> {
-                    Contributor contributor = (Contributor) userRepository.findById(id)
+                    User contributor = userRepository.findById(id)
                             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
                     ProjectContributorPK projectContributorPK = new ProjectContributorPK(contributor.getId(), project.getId());
                     return new ProjectContributor(projectContributorPK, project, contributor);
