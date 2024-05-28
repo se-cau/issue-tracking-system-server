@@ -66,6 +66,18 @@ public class UserService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<UserResponse> getContributors() {
+
+        List<User> users = userRepository.findContributors()
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        return users
+                .stream()
+                .map(UserResponse::new)
+                .toList();
+    }
+
     private boolean isDuplicateUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.isPresent();
