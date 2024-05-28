@@ -21,23 +21,23 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public void commentCreate(@RequestParam("issueId") Long issueid,@RequestBody CommentRequest commentRequest){
-        this.commentService.create(issueid,commentRequest.getMessage(),commentRequest.getAuthorId());
+    public void commentCreate(@RequestParam("issueId") Long issueId,@RequestBody CommentRequest commentRequest){
+        this.commentService.create(issueId,commentRequest.getMessage(),commentRequest.getAuthorId());
     }
 
     @DeleteMapping
-    public void commentDelete(@RequestParam("commentId") Long commentid){
-        this.commentService.delete(commentid);
+    public void commentDelete(@RequestParam("commentId") Long commentId){
+        this.commentService.delete(commentId);
     }
 
     @PatchMapping
-    public void commentModify(@RequestParam("commentId") Long commentid, @RequestBody CommentRequest commentRequest){
-        this.commentService.modify(commentid,commentRequest.getMessage());
+    public void commentModify(@RequestParam("commentId") Long commentId, @RequestBody CommentRequest commentRequest){
+        this.commentService.modify(commentId,commentRequest.getMessage());
     }
 
     @GetMapping
-    public ResponseEntity<List<CommentResponse>> commentListGet(@RequestParam("issueId")Long issueid){
-        List<Comment> comments = this.commentService.getList(issueid);
+    public ResponseEntity<List<CommentResponse>> commentListGet(@RequestParam("issueId")Long issueId){
+        List<Comment> comments = this.commentService.getList(issueId);
         List<CommentResponse> responses = new ArrayList<>();
         for(Comment i : comments){
             responses.add(new CommentResponse(i));
