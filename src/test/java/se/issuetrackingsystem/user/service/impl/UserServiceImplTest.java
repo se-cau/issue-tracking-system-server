@@ -93,10 +93,10 @@ class UserServiceImplTest {
         userRepository.save(user1);
         userRepository.save(user2);
 
-        List<UserResponse> users = userService.getUsers();
+        List<UserResponse> response = userService.getUsers();
 
-        assertEquals(2, users.size());
-        assertTrue(users.stream().anyMatch(u -> "TestDev".equals(u.getUsername())));
-        assertTrue(users.stream().anyMatch(u -> "TestTester".equals(u.getUsername())));
+        assertEquals(2, response.size());
+        assertTrue(response.stream().anyMatch(u -> "TestDev".equals(u.getUsername())));
+        assertTrue(response.stream().anyMatch(u -> "TestTester".equals(u.getUsername())));
     }
 }

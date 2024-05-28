@@ -76,7 +76,7 @@ public class ProjectServiceImpl implements ProjectService {
         return new ProjectResponse(project);
     }
 
-    private void addContributors(List<Long> contributorIds, Project project) {
+    protected void addContributors(List<Long> contributorIds, Project project) {
         List<ProjectContributor> projectContributors = contributorIds
                 .stream()
                 .map(id -> {
