@@ -7,13 +7,8 @@ import se.issuetrackingsystem.user.domain.User;
 @Getter
 public class UserResponse {
 
-    @NotBlank
     private final Long userId;
-
-    @NotBlank
     private final String username;
-
-    @NotBlank
     private final String role;
 
     public UserResponse(User user) {
