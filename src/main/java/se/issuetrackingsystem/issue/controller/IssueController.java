@@ -12,6 +12,7 @@ import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.dto.IssueRequest;
 import se.issuetrackingsystem.issue.dto.IssueResponse;
 import se.issuetrackingsystem.user.domain.User;
+import se.issuetrackingsystem.user.dto.UserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class IssueController {
 
     @PostMapping
     public ResponseEntity<List<IssueResponse>> issueCreate(@Valid @RequestBody IssueRequest issueRequest, @RequestParam("projectId") Long projectId){
-        this.issueService.create(projectId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserId(),issueRequest.getPriority());
-        List<Issue> issues = this.issueService.getList(projectId);
+        issueService.create(projectId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid(),issueRequest.getPriority());
+        List<Issue> issues = issueService.getList(projectId);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));
@@ -36,7 +37,7 @@ public class IssueController {
 
     @GetMapping
     public ResponseEntity<List<IssueResponse>> issueCheck(@RequestParam("projectId") Long projectId){
-        List<Issue> issues = this.issueService.getList(projectId);
+        List<Issue> issues = issueService.getList(projectId);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));
@@ -46,7 +47,7 @@ public class IssueController {
 
     @GetMapping("/details")
     public ResponseEntity<IssueResponse> issueDetail(@RequestParam("issueId") Long issueId){
-        Issue issue = this.issueService.getIssue(issueId);
+        Issue issue = issueService.getIssue(issueId);
         IssueResponse issueResponse = new IssueResponse(issue);
         return ResponseEntity.ok(issueResponse);
     }
@@ -58,19 +59,19 @@ public class IssueController {
 
     @PatchMapping
     public ResponseEntity<Issue> issueModify(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        Issue issue = this.issueService.modify(issueId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getPriority());
-        return ResponseEntity.ok(issue);
+        Issue issue = issueService.modify(issueId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getPriority(),issueRequest.getUserid());
+        return ResponseEntity.ok(new IssueResponse(issue));
     }
 
     @PostMapping("/assignees")
     public ResponseEntity<Issue> issueSetAssignee(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        Issue issue = this.issueService.setAssignee(issueId,issueRequest.getUserId(),issueRequest.getAssigneeId());
-        return ResponseEntity.ok(issue);
+        Issue issue = issueService.setAssignee(issueId,issueRequest.getUserid(),issueRequest.getAssigneeId());
+        return ResponseEntity.ok(new IssueResponse(issue));
     }
 
     @GetMapping("/{status}")
     public ResponseEntity<List<IssueResponse>> issueCheckByStatus(@PathVariable("status") Issue.Status status,@RequestParam("projectId") Long projectId){
-        List<Issue> issues = this.issueService.getList(projectId,status);
+        List<Issue> issues = issueService.getList(projectId,status);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));
@@ -80,13 +81,13 @@ public class IssueController {
 
     @PatchMapping("/status")
     public ResponseEntity<Issue> issueChangeStatus(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        Issue issue = this.issueService.changeStatus(issueRequest.getUserId(),issueId);
-        return ResponseEntity.ok(issue);
+        Issue issue = issueService.changeStatus(issueRequest.getUserid(),issueId);
+        return ResponseEntity.ok(new IssueResponse(issue));
     }
 
     @GetMapping("/assigned")
     public ResponseEntity<List<IssueResponse>> issueCheckByAssignee(@RequestParam("userId") Long userId){
-        List<Issue> issues = this.issueService.getListByAssignee(userId);
+        List<Issue> issues = issueService.getListByAssignee(userId);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
             responses.add(new IssueResponse(i));
@@ -95,9 +96,9 @@ public class IssueController {
     }
 
     @GetMapping("/candidates")
-    public ResponseEntity<User> issueCandidate(@RequestParam("issueId") Long issueId) {
-        User user = this.issueService.candidateUser(issueId).get();
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserResponse> issueCandidate(@RequestParam("issueId") Long issueId) {
+        User user = issueService.candidateUser(issueId).get();
+        return ResponseEntity.ok(new UserResponse(user));
     }
 
     @GetMapping("/statistics/{projectId}")

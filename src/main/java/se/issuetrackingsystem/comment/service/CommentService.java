@@ -24,32 +24,32 @@ public class CommentService {
 
     public Comment create(Long issueId, String content, Long authorId){
         Comment comment = new Comment();
-        Issue issue = this.issueRepository.findById(issueId).get();
+        Issue issue = issueRepository.findById(issueId).get();
         comment.setIssue(issue);
-        User user = this.userRepository.findById(authorId).get();
+        User user = userRepository.findById(authorId).get();
         comment.setAuthor(user);
         comment.setMessage(content);
         comment.setCreatedAt(LocalDateTime.now());
-        this.commentRepository.save(comment);
+        commentRepository.save(comment);
         return comment;
     }
 
     public Comment modify(Long commentId,String content){
-        Comment comment = this.commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         comment.setMessage(content);
-        this.commentRepository.save(comment);
+        commentRepository.save(comment);
         return comment;
     }
 
     public Comment delete(Long commentId){
-        Comment comment = this.commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
-        this.commentRepository.delete(comment);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+        commentRepository.delete(comment);
         return comment;
     }
 
     public List<Comment> getList(Long issueId){
-        Issue issue = this.issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
-        List<Comment> comments = this.commentRepository.findAllByIssue(issue);
+        Issue issue = issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        List<Comment> comments = commentRepository.findAllByIssue(issue);
         return comments;
     }
 }
