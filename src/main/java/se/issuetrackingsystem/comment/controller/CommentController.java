@@ -1,5 +1,6 @@
 package se.issuetrackingsystem.comment.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<List<CommentResponse>> commentCreate(@RequestParam("issueId") Long issueId,@RequestBody CommentRequest commentRequest){
+    public ResponseEntity<List<CommentResponse>> commentCreate(@RequestParam("issueId") Long issueId, @Valid @RequestBody CommentRequest commentRequest){
         this.commentService.create(issueId,commentRequest.getMessage(),commentRequest.getAuthorId());
         List<Comment> comments = this.commentService.getList(issueId);
         List<CommentResponse> responses = new ArrayList<>();
@@ -37,7 +38,7 @@ public class CommentController {
     }
 
     @PatchMapping
-    public ResponseEntity<Comment> commentModify(@RequestParam("commentId") Long commentId, @RequestBody CommentRequest commentRequest){
+    public ResponseEntity<Comment> commentModify(@RequestParam("commentId") Long commentId, @Valid @RequestBody CommentRequest commentRequest){
         return ResponseEntity.ok(this.commentService.modify(commentId, commentRequest.getMessage()));
     }
 
