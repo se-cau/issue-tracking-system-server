@@ -99,7 +99,7 @@ public class IssueService {
         User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         User assignee = userRepository.findById(assigneeId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         if (!user.canSetAssignee()||!assignee.canChangeIssueStateAssignedToFixed()) {
-            throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+            throw new CustomException(ErrorCode.ROLE_BAD_REQUEST);
         }
         issue.setAssignee(assignee);
         issue.setStatus(Issue.Status.ASSIGNED);

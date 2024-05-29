@@ -10,6 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import se.issuetrackingsystem.common.exception.CustomException;
 import se.issuetrackingsystem.common.exception.ErrorCode;
+import se.issuetrackingsystem.user.domain.Admin;
 import se.issuetrackingsystem.user.domain.Dev;
 import se.issuetrackingsystem.user.domain.Tester;
 import se.issuetrackingsystem.user.dto.LoginRequest;
@@ -97,6 +98,19 @@ class UserServiceTest {
 
         assertEquals(2, response.size());
         assertTrue(response.stream().anyMatch(u -> "TestDev".equals(u.getUsername())));
+        assertTrue(response.stream().anyMatch(u -> "TestTester".equals(u.getUsername())));
+    }
+
+    @Test
+    void getContributors() {
+        Admin user1 = new Admin("TestAdmin", passwordEncoder.encode("0000"));
+        Tester user2 = new Tester("TestTester", passwordEncoder.encode("0000"));
+        userRepository.save(user1);
+        userRepository.save(user2);
+
+        List<UserResponse> response = userService.getContributors();
+
+        assertEquals(1, response.size());
         assertTrue(response.stream().anyMatch(u -> "TestTester".equals(u.getUsername())));
     }
 }

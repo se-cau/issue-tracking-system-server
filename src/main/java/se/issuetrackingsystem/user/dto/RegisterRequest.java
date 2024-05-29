@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RegisterRequest {
 
-    @NotBlank
+    @NotBlank(message = "Username은 공백이 될 수 없습니다.")
     private final String username;
 
-    @NotBlank
+    @NotBlank(message = "Password는 공백이 될 수 없습니다.")
     private final String password;
 
-    @NotBlank
+    @NotBlank(message = "Role은 공백이 될 수 없습니다.")
     private final String role;
 }

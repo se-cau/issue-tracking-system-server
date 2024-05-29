@@ -1,6 +1,7 @@
 package se.issuetrackingsystem.issue.controller;
 
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class IssueController {
     private final IssueService issueService;
 
     @PostMapping
-    public ResponseEntity<List<IssueResponse>> issueCreate(@RequestBody IssueRequest issueRequest, @RequestParam("projectId") Long projectId){
+    public ResponseEntity<List<IssueResponse>> issueCreate(@Valid @RequestBody IssueRequest issueRequest, @RequestParam("projectId") Long projectId){
         issueService.create(projectId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid(),issueRequest.getPriority());
         List<Issue> issues = issueService.getList(projectId);
         List<IssueResponse> responses = new ArrayList<>();
@@ -57,13 +58,13 @@ public class IssueController {
     }
 
     @PatchMapping
-    public ResponseEntity<IssueResponse> issueModify(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+    public ResponseEntity<Issue> issueModify(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
         Issue issue = issueService.modify(issueId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getPriority(),issueRequest.getUserid());
         return ResponseEntity.ok(new IssueResponse(issue));
     }
 
     @PostMapping("/assignees")
-    public ResponseEntity<IssueResponse> issueSetAssignee(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+    public ResponseEntity<Issue> issueSetAssignee(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
         Issue issue = issueService.setAssignee(issueId,issueRequest.getUserid(),issueRequest.getAssigneeId());
         return ResponseEntity.ok(new IssueResponse(issue));
     }
@@ -79,7 +80,7 @@ public class IssueController {
     }
 
     @PatchMapping("/status")
-    public ResponseEntity<IssueResponse> issueChangeStatus(@RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+    public ResponseEntity<Issue> issueChangeStatus(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
         Issue issue = issueService.changeStatus(issueRequest.getUserid(),issueId);
         return ResponseEntity.ok(new IssueResponse(issue));
     }

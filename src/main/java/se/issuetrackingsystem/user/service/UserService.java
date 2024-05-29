@@ -50,7 +50,7 @@ public class UserService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new CustomException(ErrorCode.PASSWORD_FORBIDDEN);
+            throw new CustomException(ErrorCode.PASSWORD_BAD_REQUEST);
         }
 
         return new UserResponse(user);
@@ -60,6 +60,18 @@ public class UserService {
     public List<UserResponse> getUsers() {
 
         List<User> users = userRepository.findAll();
+        return users
+                .stream()
+                .map(UserResponse::new)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserResponse> getContributors() {
+
+        List<User> users = userRepository.findContributors()
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
         return users
                 .stream()
                 .map(UserResponse::new)
@@ -77,7 +89,7 @@ public class UserService {
             case "PL" -> new PL(username, password);
             case "Dev" -> new Dev(username, password);
             case "Tester" -> new Tester(username, password);
-            default -> throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+            default -> throw new CustomException(ErrorCode.ROLE_BAD_REQUEST);
         };
     }
 }

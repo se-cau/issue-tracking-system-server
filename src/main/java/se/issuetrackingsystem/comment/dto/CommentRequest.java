@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommentRequest {
-    @NotBlank
+
+    @NotBlank(message = "Message는 공백이 될 수 없습니다.")
     private String message;
 
-    @NotBlank
     private Long authorId;
 }
