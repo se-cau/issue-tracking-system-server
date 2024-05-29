@@ -32,7 +32,7 @@ public class UserService {
         String role = request.getRole();
 
         if (isDuplicateUsername(username)) {
-            throw new CustomException(ErrorCode.USERNAME_FORBIDDEN);
+            throw new CustomException(ErrorCode.USERNAME_CONFLICT);
         }
 
         User user = createUser(role, username, passwordEncoder.encode(password));

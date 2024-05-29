@@ -26,7 +26,7 @@ public class IssueController {
 
     @PostMapping
     public ResponseEntity<List<IssueResponse>> issueCreate(@Valid @RequestBody IssueRequest issueRequest, @RequestParam("projectId") Long projectId){
-        issueService.create(projectId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserid(),issueRequest.getPriority());
+        issueService.create(projectId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getUserId(),issueRequest.getPriority());
         List<Issue> issues = issueService.getList(projectId);
         List<IssueResponse> responses = new ArrayList<>();
         for(Issue i : issues){
@@ -58,14 +58,14 @@ public class IssueController {
     }
 
     @PatchMapping
-    public ResponseEntity<Issue> issueModify(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        Issue issue = issueService.modify(issueId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getPriority(),issueRequest.getUserid());
+    public ResponseEntity<IssueResponse> issueModify(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+        Issue issue = issueService.modify(issueId,issueRequest.getTitle(),issueRequest.getDescription(),issueRequest.getPriority(),issueRequest.getUserId());
         return ResponseEntity.ok(new IssueResponse(issue));
     }
 
     @PostMapping("/assignees")
-    public ResponseEntity<Issue> issueSetAssignee(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        Issue issue = issueService.setAssignee(issueId,issueRequest.getUserid(),issueRequest.getAssigneeId());
+    public ResponseEntity<IssueResponse> issueSetAssignee(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+        Issue issue = issueService.setAssignee(issueId,issueRequest.getUserId(),issueRequest.getAssigneeId());
         return ResponseEntity.ok(new IssueResponse(issue));
     }
 
@@ -80,8 +80,8 @@ public class IssueController {
     }
 
     @PatchMapping("/status")
-    public ResponseEntity<Issue> issueChangeStatus(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
-        Issue issue = issueService.changeStatus(issueRequest.getUserid(),issueId);
+    public ResponseEntity<IssueResponse> issueChangeStatus(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+        Issue issue = issueService.changeStatus(issueRequest.getUserId(),issueId);
         return ResponseEntity.ok(new IssueResponse(issue));
     }
 
