@@ -89,7 +89,7 @@ public class IssueService {
         Issue issue = this.issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         User user = this.userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         if (!"PL".equals(user.getRole())) {
-            throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+            throw new CustomException(ErrorCode.ROLE_BAD_REQUEST);
         }
         issue.setAssignee(userRepository.findById(assigneeId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND)));
         issue.setStatus(Issue.Status.ASSIGNED);
