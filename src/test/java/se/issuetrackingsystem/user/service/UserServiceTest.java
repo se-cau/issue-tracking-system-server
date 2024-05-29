@@ -50,7 +50,7 @@ class UserServiceTest {
         RegisterRequest request = new RegisterRequest("TestDev", "0000", "WrongRole");
 
         CustomException exception = assertThrows(CustomException.class, () -> userService.register(request));
-        assertEquals(ErrorCode.ROLE_FORBIDDEN, exception.getErrorCode());
+        assertEquals(ErrorCode.ROLE_BAD_REQUEST, exception.getErrorCode());
     }
 
     @Test
@@ -61,7 +61,7 @@ class UserServiceTest {
         userService.register(request1);
 
         CustomException exception = assertThrows(CustomException.class, () -> userService.register(request2));
-        assertEquals(ErrorCode.USERNAME_FORBIDDEN, exception.getErrorCode());
+        assertEquals(ErrorCode.USERNAME_CONFLICT, exception.getErrorCode());
     }
 
     @Test
@@ -84,7 +84,7 @@ class UserServiceTest {
         LoginRequest loginRequest = new LoginRequest("TestDev", "wrongPassword");
 
         CustomException exception = assertThrows(CustomException.class, () -> userService.login(loginRequest));
-        assertEquals(ErrorCode.PASSWORD_FORBIDDEN, exception.getErrorCode());
+        assertEquals(ErrorCode.PASSWORD_BAD_REQUEST, exception.getErrorCode());
     }
 
     @Test
