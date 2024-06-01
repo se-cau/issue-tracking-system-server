@@ -114,4 +114,22 @@ public class CommentServiceTests {
         assertEquals("1M",result.get(0).getMessage());
         assertEquals("2M",result.get(1).getMessage());
     }
+
+    @Test
+    @DisplayName("코멘트 삭제 성공")
+    void commentDelete() {
+        //given
+        Comment comment = new Comment();
+        User user = new Dev();
+        comment.setAuthor(user);
+
+        when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user));
+
+        //when
+        Comment result = this.commentService.delete(comment.getId(),user.getId());
+
+        //then
+        assertEquals(result, comment);
+    }
 }
