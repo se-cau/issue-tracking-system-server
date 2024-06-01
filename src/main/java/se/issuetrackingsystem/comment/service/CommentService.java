@@ -24,9 +24,9 @@ public class CommentService {
 
     public Comment create(Long issueId, String content, Long authorId){
         Comment comment = new Comment();
-        Issue issue = issueRepository.findById(issueId).get();
+        Issue issue = issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
         comment.setIssue(issue);
-        User user = userRepository.findById(authorId).get();
+        User user = userRepository.findById(authorId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         if(!user.canManageComment()){
             throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
         }
@@ -38,7 +38,7 @@ public class CommentService {
     }
 
     public Comment modify(Long commentId,String content,Long userid){
-        User user = userRepository.findById(userid).get();
+        User user = userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         if(user!=comment.getAuthor()){
             throw new CustomException(ErrorCode.BAD_REQUEST);
@@ -49,7 +49,7 @@ public class CommentService {
     }
 
     public Comment delete(Long commentId,Long userid){
-        User user = userRepository.findById(userid).get();
+        User user = userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
         if(user!=comment.getAuthor()){
             throw new CustomException(ErrorCode.BAD_REQUEST);
