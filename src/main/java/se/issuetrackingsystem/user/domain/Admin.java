@@ -15,41 +15,11 @@ import java.util.List;
 public class Admin extends User {
 
     @OneToMany(mappedBy = "admin")
-    private List<Project> projects = new ArrayList<>();
+    private final List<Project> projects = new ArrayList<>();
 
     @Override
     public boolean canManageProject() {
         return true;
-    }
-
-    @Override
-    public boolean canManageComment() {
-        return false;
-    }
-
-    @Override
-    public boolean canManageIssue() {
-        return false;
-    }
-
-    @Override
-    public boolean canSetAssignee() {
-        return false;
-    }
-
-    @Override
-    public boolean canChangeIssueStateAssignedToFixed() {
-        return false;
-    }
-
-    @Override
-    public boolean canChangeIssueStateFixedToResolved() {
-        return false;
-    }
-
-    @Override
-    public boolean canChangeIssueStateResolvedToClosed() {
-        return false;
     }
 
     public Admin(String username, String password) {

@@ -114,8 +114,8 @@ public class ProjectService {
         User user = userRepository.findById(adminId)
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        if (!(user instanceof Admin)) {
-            throw new CustomException(ErrorCode.ROLE_BAD_REQUEST);
+        if (!user.canManageProject()) {
+            throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
         }
 
         Admin admin = (Admin) user;

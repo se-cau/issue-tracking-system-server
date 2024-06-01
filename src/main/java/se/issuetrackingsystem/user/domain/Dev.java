@@ -10,38 +10,13 @@ import lombok.NoArgsConstructor;
 public class Dev extends User {
 
     @Override
-    public boolean canManageProject() {
-        return false;
-    }
-
-    @Override
     public boolean canManageComment() {
         return true;
     }
 
     @Override
-    public boolean canManageIssue() {
-        return false;
-    }
-
-    @Override
-    public boolean canSetAssignee() {
-        return false;
-    }
-
-    @Override
     public boolean canChangeIssueStateAssignedToFixed() {
         return true;
-    }
-
-    @Override
-    public boolean canChangeIssueStateFixedToResolved() {
-        return false;
-    }
-
-    @Override
-    public boolean canChangeIssueStateResolvedToClosed() {
-        return false;
     }
 
     public Dev(String username, String password) {
