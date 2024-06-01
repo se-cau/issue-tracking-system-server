@@ -6,14 +6,18 @@ import org.springframework.transaction.annotation.Transactional;
 import se.issuetrackingsystem.common.exception.CustomException;
 import se.issuetrackingsystem.common.exception.ErrorCode;
 import se.issuetrackingsystem.project.domain.Project;
+import se.issuetrackingsystem.project.dto.ProjectContributorResponse;
 import se.issuetrackingsystem.project.dto.ProjectRequest;
 import se.issuetrackingsystem.project.dto.ProjectResponse;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.user.domain.*;
+import se.issuetrackingsystem.user.dto.UserResponse;
 import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,6 +71,25 @@ public class ProjectService {
                 .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
 
         return new ProjectResponse(project);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjectContributorResponse> getDevs(Long projectId) {
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+
+        List<ProjectContributor> projectContributors = projectContributorRepository.findByProject(project)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        List<ProjectContributor> devContributors = projectContributors.stream()
+                .filter(contributor -> Objects.equals(contributor.getContributor().getRole(), "Dev"))
+                .toList();
+
+        return devContributors
+                .stream()
+                .map(ProjectContributorResponse::new)
+                .toList();
     }
 
     protected void addContributors(List<Long> contributorIds, Project project) {

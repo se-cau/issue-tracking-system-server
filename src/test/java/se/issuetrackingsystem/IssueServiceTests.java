@@ -299,8 +299,8 @@ public class IssueServiceTests {
         when(userRepository.findAll()).thenReturn(users);
         when(issueRepository.findById(testIssue1.getId())).thenReturn(Optional.of(testIssue1));
         when(issueRepository.findById(testIssue2.getId())).thenReturn(Optional.of(testIssue2));
-        when(projectContributorRepository.findAllByContributor(user1)).thenReturn(Arrays.asList(projectContributor1));
-        when(projectContributorRepository.findAllByContributor(user2)).thenReturn(Arrays.asList(projectContributor2));
+        when(projectContributorRepository.findByContributor(user1)).thenReturn(Arrays.asList(projectContributor1));
+        when(projectContributorRepository.findByContributor(user2)).thenReturn(Arrays.asList(projectContributor2));
         when(issueRepository.findAllByFixer(user1)).thenReturn(Arrays.asList(issue1));
         when(issueRepository.findAllByFixer(user2)).thenReturn(Arrays.asList(issue2));
 

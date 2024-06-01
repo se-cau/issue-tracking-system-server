@@ -12,7 +12,6 @@ import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.user.domain.Dev;
 import se.issuetrackingsystem.user.domain.ProjectContributor;
-import se.issuetrackingsystem.user.domain.Tester;
 import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
@@ -172,7 +171,8 @@ public class IssueService {
         List<Project> projs;
         for(User u : devs){
             projs = new ArrayList<>();
-            proconts = projectContributorRepository.findAllByContributor(u);
+            proconts = projectContributorRepository.findByContributor(u);
+
             for(ProjectContributor pc : proconts){
                 projs.add(pc.getProject());
             }

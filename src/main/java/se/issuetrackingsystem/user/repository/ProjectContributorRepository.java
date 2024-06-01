@@ -7,9 +7,11 @@ import se.issuetrackingsystem.user.domain.ProjectContributor;
 import se.issuetrackingsystem.user.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProjectContributorRepository extends JpaRepository<ProjectContributor, Long> {
-    List<ProjectContributor> findAllByContributor(User contributor);
-    List<ProjectContributor> findByProject(Project project);
+    List<ProjectContributor> findByContributor(User contributor);
+
+    Optional<List<ProjectContributor>> findByProject(Project project);
 }

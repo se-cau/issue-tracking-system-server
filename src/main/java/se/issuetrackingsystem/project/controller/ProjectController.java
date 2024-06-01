@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.issuetrackingsystem.project.dto.ProjectContributorResponse;
 import se.issuetrackingsystem.project.dto.ProjectRequest;
 import se.issuetrackingsystem.project.dto.ProjectResponse;
 import se.issuetrackingsystem.project.service.ProjectService;
@@ -30,6 +31,11 @@ public class ProjectController {
     @GetMapping("/{projectId}")
     public ResponseEntity<ProjectResponse> getProject(@PathVariable Long projectId) {
         return ResponseEntity.ok(projectService.getProject(projectId));
+    }
+
+    @GetMapping("/{projectId}/dev")
+    public ResponseEntity<List<ProjectContributorResponse>> getDevs(@PathVariable Long projectId) {
+        return ResponseEntity.ok(projectService.getDevs(projectId));
     }
 
 }

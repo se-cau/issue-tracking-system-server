@@ -87,7 +87,8 @@ class ProjectServiceTest {
         List<Long> contributorIds = Arrays.asList(user1.getId(), user2.getId());
         projectService.addContributors(contributorIds, project);
 
-        List<ProjectContributor> projectContributors = projectContributorRepository.findByProject(project);
+        List<ProjectContributor> projectContributors = projectContributorRepository.findByProject(project)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         assertNotNull(projectContributors);
         assertEquals(2, projectContributors.size());
