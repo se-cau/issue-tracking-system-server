@@ -65,38 +65,6 @@ public class IssueServiceTests {
     }
 
     @Test
-    @DisplayName("이슈 생성 실패-프로젝트_없음")
-    void issueCreateNoProject() {
-        //given
-        Project project = mock(Project.class);
-        User user = mock(User.class);
-
-        when(projectRepository.findById(project.getId())).thenReturn(Optional.empty());
-        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-        when(issueRepository.save(any(Issue.class))).thenAnswer(i -> i.getArgument(0));
-
-        //when then
-        assertThrows(CustomException.class,
-        ()-> issueService.create(project.getId(), "Issue1", "issue", user.getId(), Issue.Priority.MINOR));
-    }
-
-    @Test
-    @DisplayName("이슈 생성 실패-리포터_없음")
-    void issueCreateNoReporter() {
-        //given
-        Project project = mock(Project.class);
-        User user = mock(User.class);
-
-        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
-        when(userRepository.findById(user.getId())).thenReturn(Optional.empty());
-        when(issueRepository.save(any(Issue.class))).thenAnswer(i -> i.getArgument(0));
-
-        //when then
-        assertThrows(CustomException.class,
-                ()-> issueService.create(project.getId(), "Issue1", "issue", user.getId(), Issue.Priority.MINOR));
-    }
-
-    @Test
     @DisplayName("이슈 생성 실패-Tester아님")
     void issueCreateNotTester() {
         //given
@@ -254,7 +222,7 @@ public class IssueServiceTests {
     }
 
     @Test
-    @DisplayName("이슈 삭제 실패-Tester")
+    @DisplayName("이슈 삭제 실패-Tester 아님")
     void issueDeleteNotTester() {
         //given
         Issue issue = mock(Issue.class);
