@@ -10,11 +10,6 @@ import lombok.NoArgsConstructor;
 public class Tester extends User {
 
     @Override
-    public boolean canManageProject() {
-        return false;
-    }
-
-    @Override
     public boolean canManageComment() {
         return true;
     }
@@ -25,23 +20,8 @@ public class Tester extends User {
     }
 
     @Override
-    public boolean canSetAssignee() {
-        return false;
-    }
-
-    @Override
-    public boolean canChangeIssueStateAssignedToFixed() {
-        return false;
-    }
-
-    @Override
     public boolean canChangeIssueStateFixedToResolved() {
         return true;
-    }
-
-    @Override
-    public boolean canChangeIssueStateResolvedToClosed() {
-        return false;
     }
 
     public Tester(String username, String password) {
