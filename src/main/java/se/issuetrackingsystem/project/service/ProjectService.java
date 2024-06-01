@@ -76,13 +76,7 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public List<ProjectContributorResponse> getDevs(Long projectId) {
 
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
-
-        List<ProjectContributor> projectContributors = projectContributorRepository.findByProject(project)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        List<ProjectContributor> devContributors = projectContributors.stream()
+        List<ProjectContributor> devContributors = getProjectContributors(projectId).stream()
                 .filter(contributor -> Objects.equals(contributor.getContributor().getRole(), "Dev"))
                 .toList();
 
@@ -126,5 +120,13 @@ public class ProjectService {
 
         Admin admin = (Admin) user;
         return admin;
+    }
+
+    private List<ProjectContributor> getProjectContributors(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new CustomException(ErrorCode.PROJECT_NOT_FOUND));
+
+        return projectContributorRepository.findByProject(project)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 }
