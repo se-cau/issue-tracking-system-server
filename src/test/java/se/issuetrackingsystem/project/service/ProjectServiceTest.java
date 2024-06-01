@@ -15,6 +15,8 @@ import se.issuetrackingsystem.project.dto.ProjectRequest;
 import se.issuetrackingsystem.project.dto.ProjectResponse;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
 import se.issuetrackingsystem.projectContributor.domain.ProjectContributor;
+import se.issuetrackingsystem.projectContributor.domain.ProjectContributorPK;
+import se.issuetrackingsystem.projectContributor.dto.ProjectContributorResponse;
 import se.issuetrackingsystem.user.domain.*;
 import se.issuetrackingsystem.projectContributor.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
@@ -139,6 +141,45 @@ class ProjectServiceTest {
         assertNotNull(project);
         assertEquals("Test Project", response.getTitle());
         assertEquals("TestAdmin", response.getAdminName());
+    }
+
+    @Test
+    void getDevs() {
+
+        // Given
+        Admin admin = new Admin("TestAdmin", passwordEncoder.encode("0000"));
+        userRepository.save(admin);
+
+        Project project = new Project("Test Project", admin);
+        projectRepository.save(project);
+
+        User dev1 = new Dev("Dev1", passwordEncoder.encode("0000"));
+        User dev2 = new Dev("Dev2", passwordEncoder.encode("0000"));
+        User tester = new Tester("Tester", passwordEncoder.encode("0000"));
+        userRepository.save(dev1);
+        userRepository.save(dev2);
+        userRepository.save(tester);
+
+        ProjectContributorPK projectContributorPK1 = new ProjectContributorPK(dev1.getId(), project.getId());
+        ProjectContributorPK projectContributorPK2 = new ProjectContributorPK(dev2.getId(), project.getId());
+        ProjectContributorPK projectContributorPK3 = new ProjectContributorPK(tester.getId(), project.getId());
+
+        ProjectContributor contributor1 = new ProjectContributor(projectContributorPK1, project, dev1);
+        ProjectContributor contributor2 = new ProjectContributor(projectContributorPK2, project, dev2);
+        ProjectContributor contributor3 = new ProjectContributor(projectContributorPK3, project, tester);
+        projectContributorRepository.save(contributor1);
+        projectContributorRepository.save(contributor2);
+        projectContributorRepository.save(contributor3);
+
+        // When
+        List<ProjectContributorResponse> devs = projectService.getDevs(project.getId());
+
+        // Then
+        assertNotNull(devs);
+        assertEquals(2, devs.size());
+        assertTrue(devs.stream().anyMatch(dev -> dev.getUsername().equals("Dev1")));
+        assertTrue(devs.stream().anyMatch(dev -> dev.getUsername().equals("Dev2")));
+        assertFalse(devs.stream().anyMatch(dev -> dev.getUsername().equals("Tester")));
     }
 
     @Test
