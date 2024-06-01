@@ -30,10 +30,7 @@ public class ProjectService {
         Long adminId = request.getAdminId();
         List<Long> contributorIds = request.getContributorIds();
 
-        Admin admin = (Admin) userRepository.findById(adminId)
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        Project project = new Project(title, admin);
+        Project project = new Project(title, getAdmin(adminId));
         projectRepository.save(project);
 
         addContributors(contributorIds, project);
@@ -73,11 +70,17 @@ public class ProjectService {
     }
 
     protected void addContributors(List<Long> contributorIds, Project project) {
+
         List<ProjectContributor> projectContributors = contributorIds
                 .stream()
                 .map(id -> {
                     User contributor = userRepository.findById(id)
                             .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+                    if (contributor instanceof Admin) {
+                        throw new CustomException(ErrorCode.ROLE_BAD_REQUEST);
+                    }
+                    
                     ProjectContributorPK projectContributorPK = new ProjectContributorPK(contributor.getId(), project.getId());
                     return new ProjectContributor(projectContributorPK, project, contributor);
                 })
@@ -87,5 +90,18 @@ public class ProjectService {
 
         projectContributors.forEach(project::addContributor);
         projectRepository.save(project);
+    }
+
+    private Admin getAdmin(Long adminId) {
+
+        User user = userRepository.findById(adminId)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!(user instanceof Admin)) {
+            throw new CustomException(ErrorCode.ROLE_BAD_REQUEST);
+        }
+
+        Admin admin = (Admin) user;
+        return admin;
     }
 }

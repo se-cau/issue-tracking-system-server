@@ -32,4 +32,9 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
+
+    @GetMapping("/contributors")
+    public ResponseEntity<List<UserResponse>> getContributors() {
+        return ResponseEntity.ok(userService.getContributors());
+    }
 }
