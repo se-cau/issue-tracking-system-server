@@ -97,6 +97,22 @@ public class IssueServiceTests {
     }
 
     @Test
+    @DisplayName("이슈 생성 실패-Tester아님")
+    void issueCreateNotTester() {
+        //given
+        Project project = mock(Project.class);
+        User user = new Dev();
+
+        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        when(issueRepository.save(any(Issue.class))).thenAnswer(i -> i.getArgument(0));
+
+        //when then
+        assertThrows(CustomException.class,
+                ()-> issueService.create(project.getId(), "Issue1", "issue", user.getId(), Issue.Priority.MINOR));
+    }
+
+    @Test
     @DisplayName("이슈 찾기 성공")
     void getIssue() {
         //given
@@ -204,6 +220,24 @@ public class IssueServiceTests {
     }
 
     @Test
+    @DisplayName("이슈 수정 실패-Tester아님")
+    void issueModifyNotTester() {
+        //given
+        Issue issue = new Issue();
+        issue.setTitle("Hey");
+        issue.setDescription("Apple");
+        issue.setPriority(Issue.Priority.MINOR);
+
+        when(issueRepository.findById(issue.getId())).thenReturn(Optional.of(issue));
+        when(userRepository.findById(any())).thenReturn(Optional.of(new Dev()));
+
+        //when then
+        assertThrows(CustomException.class,
+                ()->issueService.modify(issue.getId(), "Hello", "Banana", Issue.Priority.MAJOR, 1L));
+
+    }
+
+    @Test
     @DisplayName("이슈 삭제 성공")
     void issueDelete() {
         //given
@@ -217,6 +251,20 @@ public class IssueServiceTests {
 
         //then
         assertEquals(result, issue);
+    }
+
+    @Test
+    @DisplayName("이슈 삭제 실패-Tester")
+    void issueDeleteNotTester() {
+        //given
+        Issue issue = mock(Issue.class);
+
+        when(issueRepository.findById(issue.getId())).thenReturn(Optional.of(issue));
+        when(userRepository.findById(any())).thenReturn(Optional.of(new Dev()));
+
+        //when then
+        assertThrows(CustomException.class,
+                ()->issueService.delete(issue.getId(),1L));
     }
 
     @Test
@@ -239,10 +287,26 @@ public class IssueServiceTests {
 
     @Test
     @DisplayName("이슈 Assignee 설정 실패_PL이 아님")
-    void setAssigneeFail() {
+    void setAssigneeNotPL() {
         //given
-        User assignee = mock(User.class);
-        User user = mock(User.class);
+        User assignee = new Dev();
+        User user = new Tester();
+        Issue issue = new Issue();
+
+        when(issueRepository.findById(issue.getId())).thenReturn(Optional.of(issue));
+        when(userRepository.findById(any())).thenReturn(Optional.of(user)).thenReturn(Optional.of(assignee));
+
+        //when then
+        assertThrows(CustomException.class,
+                ()->issueService.setAssignee(issue.getId(),user.getId(),assignee.getId()));
+    }
+
+    @Test
+    @DisplayName("이슈 Assignee 설정 실패-Assignee가 Dev이 아님")
+    void setAssigneeNotDev() {
+        //given
+        User assignee = new Tester();
+        User user = new PL();
         Issue issue = new Issue();
 
         when(issueRepository.findById(issue.getId())).thenReturn(Optional.of(issue));
