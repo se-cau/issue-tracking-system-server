@@ -84,6 +84,11 @@ public class IssueController {
         Issue issue = issueService.changeStatus(issueRequest.getUserId(),issueId);
         return ResponseEntity.ok(new IssueResponse(issue));
     }
+    @PostMapping("/status")
+    public ResponseEntity<IssueResponse> issueChangeStatusPost(@Valid @RequestBody IssueRequest issueRequest,@RequestParam("issueId") Long issueId){
+        Issue issue = issueService.changeStatus(issueRequest.getUserId(),issueId);
+        return ResponseEntity.ok(new IssueResponse(issue));
+    }
 
     @GetMapping("/assigned")
     public ResponseEntity<List<IssueResponse>> issueCheckByAssignee(@RequestParam("userId") Long userId){
