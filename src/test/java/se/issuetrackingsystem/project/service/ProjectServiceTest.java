@@ -14,8 +14,9 @@ import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.dto.ProjectRequest;
 import se.issuetrackingsystem.project.dto.ProjectResponse;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
+import se.issuetrackingsystem.projectContributor.domain.ProjectContributor;
 import se.issuetrackingsystem.user.domain.*;
-import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
+import se.issuetrackingsystem.projectContributor.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.util.Arrays;

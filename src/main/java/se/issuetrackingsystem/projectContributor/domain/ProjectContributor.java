@@ -1,9 +1,10 @@
-package se.issuetrackingsystem.user.domain;
+package se.issuetrackingsystem.projectContributor.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import se.issuetrackingsystem.project.domain.Project;
+import se.issuetrackingsystem.user.domain.User;
 
 @Entity
 @Getter

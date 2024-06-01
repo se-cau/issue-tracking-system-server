@@ -1,7 +1,7 @@
-package se.issuetrackingsystem.project.dto;
+package se.issuetrackingsystem.projectContributor.dto;
 
 import lombok.Getter;
-import se.issuetrackingsystem.user.domain.ProjectContributor;
+import se.issuetrackingsystem.projectContributor.domain.ProjectContributor;
 
 @Getter
 public class ProjectContributorResponse {

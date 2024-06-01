@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import se.issuetrackingsystem.user.domain.Admin;
-import se.issuetrackingsystem.user.domain.ProjectContributor;
+import se.issuetrackingsystem.projectContributor.domain.ProjectContributor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

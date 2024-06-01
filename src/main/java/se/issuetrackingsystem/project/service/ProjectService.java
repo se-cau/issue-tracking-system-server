@@ -6,18 +6,18 @@ import org.springframework.transaction.annotation.Transactional;
 import se.issuetrackingsystem.common.exception.CustomException;
 import se.issuetrackingsystem.common.exception.ErrorCode;
 import se.issuetrackingsystem.project.domain.Project;
-import se.issuetrackingsystem.project.dto.ProjectContributorResponse;
+import se.issuetrackingsystem.projectContributor.dto.ProjectContributorResponse;
 import se.issuetrackingsystem.project.dto.ProjectRequest;
 import se.issuetrackingsystem.project.dto.ProjectResponse;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
+import se.issuetrackingsystem.projectContributor.domain.ProjectContributor;
+import se.issuetrackingsystem.projectContributor.domain.ProjectContributorPK;
 import se.issuetrackingsystem.user.domain.*;
-import se.issuetrackingsystem.user.dto.UserResponse;
-import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
+import se.issuetrackingsystem.projectContributor.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

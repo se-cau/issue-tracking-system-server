@@ -2,6 +2,7 @@ package se.issuetrackingsystem.user.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import se.issuetrackingsystem.projectContributor.domain.ProjectContributor;
 
 import java.time.LocalDateTime;
 import java.util.List;

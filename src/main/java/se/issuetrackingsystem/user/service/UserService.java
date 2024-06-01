@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.issuetrackingsystem.common.exception.CustomException;
 import se.issuetrackingsystem.common.exception.ErrorCode;
-import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.user.domain.*;
 import se.issuetrackingsystem.user.dto.LoginRequest;
 import se.issuetrackingsystem.user.dto.RegisterRequest;
 import se.issuetrackingsystem.user.dto.UserResponse;
-import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
+import se.issuetrackingsystem.projectContributor.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
-import se.issuetrackingsystem.user.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +22,6 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final ProjectContributorRepository projectContributorRepository;
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Transactional

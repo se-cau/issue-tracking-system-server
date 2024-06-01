@@ -12,8 +12,9 @@ import se.issuetrackingsystem.issue.repository.IssueRepository;
 import se.issuetrackingsystem.issue.service.IssueService;
 import se.issuetrackingsystem.project.domain.Project;
 import se.issuetrackingsystem.project.repository.ProjectRepository;
+import se.issuetrackingsystem.projectContributor.domain.ProjectContributor;
 import se.issuetrackingsystem.user.domain.*;
-import se.issuetrackingsystem.user.repository.ProjectContributorRepository;
+import se.issuetrackingsystem.projectContributor.repository.ProjectContributorRepository;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
 import java.util.Arrays;
