@@ -11,6 +11,8 @@ import se.issuetrackingsystem.comment.repository.CommentRepository;
 import se.issuetrackingsystem.comment.service.CommentService;
 import se.issuetrackingsystem.issue.domain.Issue;
 import se.issuetrackingsystem.issue.repository.IssueRepository;
+import se.issuetrackingsystem.user.domain.Dev;
+import se.issuetrackingsystem.user.domain.Tester;
 import se.issuetrackingsystem.user.domain.User;
 import se.issuetrackingsystem.user.repository.UserRepository;
 
@@ -43,7 +45,7 @@ public class CommentServiceTests {
         //given
         Comment comment = new Comment();
         Issue issue = mock(Issue.class);
-        User user = mock(User.class);
+        User user = new Dev();
         comment.setMessage("Hello");
         comment.setIssue(issue);
         comment.setAuthor(user);
@@ -66,13 +68,16 @@ public class CommentServiceTests {
     void commentModify() {
         //given
         Comment comment = new Comment();
+        Tester tester = new Tester();
+        comment.setAuthor(tester);
         comment.setMessage("Hello");
 
         when(commentRepository.findById(comment.getId())).thenReturn(Optional.of(comment));
         when(commentRepository.save(comment)).thenReturn(comment);
+        when(userRepository.findById(any())).thenReturn(Optional.of(tester));
 
         //when
-        Comment result = commentService.modify(comment.getId(), "Hi");
+        Comment result = commentService.modify(comment.getId(), "Hi", tester.getId());
 
         //then
         assertEquals("Hi", result.getMessage());

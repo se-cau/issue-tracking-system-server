@@ -209,9 +209,10 @@ public class IssueServiceTests {
         Issue issue = mock(Issue.class);
 
         when(issueRepository.findById(issue.getId())).thenReturn(Optional.of(issue));
+        when(userRepository.findById(any())).thenReturn(Optional.of(new Tester()));
 
         //when
-        Issue result = this.issueService.delete(issue.getId());
+        Issue result = this.issueService.delete(issue.getId(),1L);
 
         //then
         assertEquals(result, issue);

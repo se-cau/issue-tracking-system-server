@@ -12,5 +12,5 @@ public class CommentRequest {
     @NotBlank(message = "Message는 공백이 될 수 없습니다.")
     private String message;
 
-    private Long authorId;
+    private Long userId;
 }

@@ -27,6 +27,9 @@ public class CommentService {
         Issue issue = issueRepository.findById(issueId).get();
         comment.setIssue(issue);
         User user = userRepository.findById(authorId).get();
+        if(!user.canManageComment()){
+            throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+        }
         comment.setAuthor(user);
         comment.setMessage(content);
         comment.setCreatedAt(LocalDateTime.now());
@@ -34,15 +37,23 @@ public class CommentService {
         return comment;
     }
 
-    public Comment modify(Long commentId,String content){
+    public Comment modify(Long commentId,String content,Long userid){
+        User user = userRepository.findById(userid).get();
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+        if(user!=comment.getAuthor()){
+            throw new CustomException(ErrorCode.BAD_REQUEST);
+        }
         comment.setMessage(content);
         commentRepository.save(comment);
         return comment;
     }
 
-    public Comment delete(Long commentId){
+    public Comment delete(Long commentId,Long userid){
+        User user = userRepository.findById(userid).get();
         Comment comment = commentRepository.findById(commentId).orElseThrow(()->new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+        if(user!=comment.getAuthor()){
+            throw new CustomException(ErrorCode.BAD_REQUEST);
+        }
         commentRepository.delete(comment);
         return comment;
     }

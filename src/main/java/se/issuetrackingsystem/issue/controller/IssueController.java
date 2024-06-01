@@ -53,8 +53,8 @@ public class IssueController {
     }
 
     @DeleteMapping
-    public ResponseEntity<IssueResponse> issueDelete(@RequestParam("issueId") Long issueId){
-        return ResponseEntity.ok(new IssueResponse(issueService.delete(issueId)));
+    public ResponseEntity<IssueResponse> issueDelete(@RequestParam("issueId") Long issueId,@Valid @RequestBody IssueRequest issueRequest){
+        return ResponseEntity.ok(new IssueResponse(issueService.delete(issueId,issueRequest.getUserId())));
     }
 
     @PatchMapping

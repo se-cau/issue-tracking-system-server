@@ -88,8 +88,12 @@ public class IssueService {
         return issue;
     }
 
-    public Issue delete(Long issueId){
+    public Issue delete(Long issueId,Long userid){
         Issue issue = issueRepository.findById(issueId).orElseThrow(()->new CustomException(ErrorCode.ISSUE_NOT_FOUND));
+        User user = userRepository.findById(userid).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+        if(!user.canManageIssue()){
+            throw new CustomException(ErrorCode.ROLE_FORBIDDEN);
+        }
         issueRepository.delete(issue);
         return issue;
     }
