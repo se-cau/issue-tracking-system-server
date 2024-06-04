@@ -310,24 +310,28 @@ public class IssueServiceTests {
         issue1.setTitle("A A B");
         issue1.setDescription("B B");
         issue1.setFixer(user1);
+        issue1.setProject(project);
         issue1.setStatus(Issue.Status.FIXED);
 
         Issue issue2 = new Issue();
-        issue1.setId(2L);
+        issue2.setId(2L);
         issue2.setTitle("B A");
         issue2.setDescription("A A A B B B");
         issue2.setFixer(user2);
+        issue2.setProject(project);
         issue2.setStatus(Issue.Status.FIXED);
 
         Issue testIssue1 = new Issue();
         testIssue1.setId(3L);
         testIssue1.setTitle("A");
         testIssue1.setDescription("A");
+        testIssue1.setProject(project);
 
         Issue testIssue2 = new Issue();
         testIssue2.setId(4L);
         testIssue2.setTitle("B");
         testIssue2.setDescription("B");
+        testIssue2.setProject(project);
 
         when(userRepository.findAll()).thenReturn(users);
         when(issueRepository.findById(testIssue1.getId())).thenReturn(Optional.of(testIssue1));
