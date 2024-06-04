@@ -189,7 +189,7 @@ public class IssueService {
         //식별된 dev에 대한 정보객체 생성
         Integer maxP = 0;
         Optional<User> result = Optional.empty();
-        for(User d : devs){
+        for(User d : projectDevs){
             devInfo tempInfo = new devInfo(d,issueRepository.findAllByFixer(d));
             for(String s : titleWords){
                 if(tempInfo.getIssuesTitleWords().containsKey(s)){
